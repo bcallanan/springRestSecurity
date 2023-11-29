@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: local
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  security:
+    user:
+      name: "brian"
+      password: "password"

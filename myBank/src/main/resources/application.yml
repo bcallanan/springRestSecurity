@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active: localBank
+server:
+  # this can be overridden on the command line with
+  # java -jar -Dserver.port=808# target/kafkaStoreConsumer-0.0.1-SNAPSHOT.jar
+  port: 7075
+---
+spring:
+  config:
+    activate:
+      on-profile: localBank
+  security:
+    user:
+      name: "brian"
+      password: "password"
+
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://192.168.99.108:5438/pgsecdb
+    username: postgres
+    password: Password#1
+    driverClassName: org.postgresql.Driver
+    continue-on-error: true
+
+  jpa:
+    database: postgresql
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        cache:
+          use_query_cache: false
+          use_second_level_cache: false
+          use_structured_entries: false
+          use_minimal_puts: false
