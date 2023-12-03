@@ -18,3 +18,12 @@ repo in my repository for postgres. It's not trivial to set this up so if you ne
 
 I've place a git tag/branch for both repos: functionalPostgresAuthenticationWithSpring
 
+New branch created in conjuction with dockers to synchronize functionality across the repos:  mybankwithBCryptSecurityAndPostgres
+
+  - this new branch starts a 'sequence' in postgres for creating user/customer records. Postgres will auto generate the primaryKey.
+  - BCypt Password encoding
+  - Registering new accounts thru a post(postman)... I'll update a collection here but its primitive for now.
+  - Here's the controler endpoints:
+	requestMatchers("/welcome", "/", "/myAccount","/myBalance","/myLoans","/myCards").authenticated()
+        requestMatchers("/notices","/contact", "/register").permitAll())
+
