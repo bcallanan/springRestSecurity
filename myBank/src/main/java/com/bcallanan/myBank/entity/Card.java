@@ -2,6 +2,7 @@ package com.bcallanan.myBank.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class MyBankRecord {
+public class Card {
 
 	@Id
-	@GeneratedValue
-	private Integer accountId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer cardId;
+	private String cardName;
 }

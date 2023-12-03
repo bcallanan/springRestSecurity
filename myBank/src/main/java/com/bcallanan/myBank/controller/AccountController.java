@@ -9,6 +9,6 @@ public class AccountController {
 	
 	@GetMapping( value = { "/myAccount","/myaccount" })
 	public String getAccountDetails() {
-		return "Hello Welcome to spring rest application 'MyBank'";
+		return "Hello Welcome to spring rest application 'MyBank' in my account";
 	}
 }

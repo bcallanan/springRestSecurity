@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -25,9 +26,11 @@ public class MyBankSecurityConfig {
 		 *  Below is the custom security configurations
 		 */
 
-		http.authorizeHttpRequests((requests) -> requests.
+		http
+		  .csrf().disable()	
+		  .authorizeHttpRequests((requests) -> requests.
 				requestMatchers("/welcome", "/", "/myAccount","/myBalance","/myLoans","/myCards").authenticated()
-				.requestMatchers("/notices","/contact").permitAll())
+				.requestMatchers("/notices","/contact", "/register").permitAll())
 		.formLogin(Customizer.withDefaults())
 		.httpBasic(Customizer.withDefaults());
 		return http.build();
@@ -98,7 +101,7 @@ public class MyBankSecurityConfig {
 	 * @param dataSource
 	 * @return
 	 */
-	@Bean
+	//@Bean
 	//public JdbcUserDetailsManager userDetailsService(DataSource dataSource ) {
 	public UserDetailsService userDetailsService(DataSource dataSource ) {
 		return new JdbcUserDetailsManager( dataSource );
@@ -108,9 +111,10 @@ public class MyBankSecurityConfig {
 	 * this is plaintext password approach
 	 * @return
 	 */
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
+		return new BCryptPasswordEncoder();
+		//return NoOpPasswordEncoder.getInstance();
 	}
 }
