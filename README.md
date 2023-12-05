@@ -18,3 +18,13 @@ repo in my repository for postgres. It's not trivial to set this up so if you ne
 
 I've place a git tag/branch for both repos: functionalPostgresAuthenticationWithSpring
 
+Update 1)
+
+The bank project is now functional on master with a customized authentication provider with the following:
+
+   - bCrypt Password encoding
+   - Custom authentication provider (moved away from the JDBC Authentication provider)
+   - ControllerAdvice - providing some level of validation on endpoint payloads
+   - Registering new bank account customers (API/Postman enabled)
+   - Sequence ordering of new customers
+   I've place a git tag/branch for both(This one and dockers) repos: AuthenticationWithSpringUpdate1
