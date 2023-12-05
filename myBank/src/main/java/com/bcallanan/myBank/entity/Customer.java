@@ -1,11 +1,12 @@
 package com.bcallanan.myBank.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,9 +21,17 @@ public class Customer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
-	//@GenericGenerator( name = "native", type = org.hibernate.id..class)
 	private int customerId;
+	@NotNull
+	@NotBlank
 	private String emailAddress;
+	@NotNull
+	@NotBlank
 	private String pwd;
+	@NotNull
+	@NotBlank
 	private String role;
+	
+	@Transient
+	private String registrationToken; 
 }

@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service;
 import com.bcallanan.myBank.entity.Customer;
 import com.bcallanan.myBank.jpa.CustomerRepository;
 
-@Service
+// @Service - turned off to use customized AuthenticationProvider
+// @see AccountSecurityAuthenticationProvider
 public class BankUserDetails implements UserDetailsService {
 
 	@Autowired

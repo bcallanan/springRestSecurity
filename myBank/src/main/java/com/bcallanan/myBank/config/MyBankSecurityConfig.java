@@ -28,8 +28,8 @@ public class MyBankSecurityConfig {
 
 		http
 		  .csrf().disable()	
-		  .authorizeHttpRequests((requests) -> requests.
-				requestMatchers("/welcome", "/", "/myAccount","/myBalance","/myLoans","/myCards").authenticated()
+		  .authorizeHttpRequests((requests) -> requests
+				.requestMatchers("/welcome", "/", "/myAccount","/myBalance","/myLoans","/myCards").authenticated()
 				.requestMatchers("/notices","/contact", "/register").permitAll())
 		.formLogin(Customizer.withDefaults())
 		.httpBasic(Customizer.withDefaults());
