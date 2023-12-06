@@ -29,6 +29,7 @@ The bank project is now functional on master with a customized authentication pr
    - Sequence ordering of new customers
    I've place a git tag/branch for both(This one and dockers) repos: AuthenticationWithSpringUpdate1
 
-Update 2) in progress on master. Added angular single page app.
+Update 2) in progress on master. Added angular single page app. This is an angular 14.2.X web app. As I incorporate more
+features and knowledge I'll consider what I need to do to move this forward to 16.x.
 
 ![Alt text](./bankAngularApp/angularBankApp.png?raw=true "BC Bank - fictitous bank")
