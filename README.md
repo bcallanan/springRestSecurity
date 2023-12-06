@@ -28,3 +28,7 @@ The bank project is now functional on master with a customized authentication pr
    - Registering new bank account customers (API/Postman enabled)
    - Sequence ordering of new customers
    I've place a git tag/branch for both(This one and dockers) repos: AuthenticationWithSpringUpdate1
+
+Update 2) in progress on master. Added angular single page app.
+
+![Alt text](./bankAngularApp/angularBankApp.png?raw=true "BC Bank - fictitous bank")
