@@ -10,13 +10,21 @@ export class AuthActivateRouteGuard implements CanActivate {
 
     }
 
+	/**
+	 *  This is a safeguard to allowing the user who may/maynot be active
+	 *  route within the app.
+	 */
     canActivate(route:ActivatedRouteSnapshot, state:RouterStateSnapshot){
+    	
         if(sessionStorage.getItem('userdetails')){
             this.user = JSON.parse(sessionStorage.getItem('userdetails')!);
         }
+    	
+    	// no user details - route to login
         if(!this.user){
             this.router.navigate(['login']);
         }
+    	
         return this.user?true:false;
     }
 

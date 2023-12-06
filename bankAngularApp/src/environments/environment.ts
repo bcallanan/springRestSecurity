@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  rooturl : 'http://localhost:4201',
+  rooturl : 'http://localhost:7075',
   appFooter: '© BC Bank, Member FDIC - development'
 };
 

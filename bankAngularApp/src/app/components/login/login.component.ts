@@ -22,12 +22,22 @@ export class LoginComponent implements OnInit {
 
   }
 
+  /**
+   * @see login.component.html on submit this api gets called
+   */
   validateUser(loginForm: NgForm) {
+	// we then call the login service component ts class
     this.loginService.validateLoginDetails(this.model).subscribe(
       responseData => {
         this.model = <any> responseData.body;
+        
+        // etting Auth here relates to the header ebeing displayed in
+        // the header.components
+        // see  header.components.ts
         this.model.authStatus = 'AUTH';
         window.sessionStorage.setItem("userdetails",JSON.stringify(this.model));
+        
+        // Redirect to the dashboard
         this.router.navigate(['dashboard']);
       });
 

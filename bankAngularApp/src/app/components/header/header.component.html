@@ -8,6 +8,7 @@
     </div>
     <nav class="hright dnav">
       <ul>
+        <!-- AUTH is set in login.component.ts when the user is validated --> 
         <li *ngIf="user.authStatus!='AUTH'" routerLinkActive="active"><a routerLink="/home">Home</a></li>
         <li *ngIf="user.authStatus!='AUTH'" routerLinkActive="active"><a routerLink="/login">Login</a></li>
         <li *ngIf="user.authStatus!='AUTH'" routerLinkActive="active"><a routerLink="/contact">Contact US</a></li>
