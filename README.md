@@ -45,10 +45,12 @@ By default, the browser will block this communication due to <i><b>CORS</b></i>.
 
 There are two options:
 
+In both cases, the browser will perform a <i><b>Preflight</b></i> request to the backend. The backend can then specifiy whether or not the other domain is properly registered to communicate.
+
 Option 1)
-A browser will perform a <i><b>Preflight</b></i> request to the backend. The backend can then specifiy whether or not the other domain is properly registered to communicate. Spring supports this with a <i><b>CrossOrigin</b></i> annotation. Spring, also, supports the concept of auto-configuration where this domain can be registered in the application.yml file to register the front-end with the back-end origin(eg. http://localhost:4200 ). This annotation is placed on the controller(s). Sounds kind'a clunky and adds overhead.
+ Spring supports this with a <i><b>CrossOrigin</b></i> annotation. Spring, also, supports the concept of auto-configuration where this domain can be registered in the application.yml file to register the front-end with the back-end origin(eg. http://localhost:4200 ). This annotation is placed on the controller(s). Sounds kind'a clunky and adds overhead.
 
 Option 2)
-Spring's Security FilterChain Bean can be instrumented with a CORS configuration with sort'of one-stop-shopping type configuration. Ah, yes!
+Spring's Security FilterChain Bean can be instrumented with a CORS configuration with a Cors Source Configuration. Ah, yes!
      
 Note: We'll also have to cure: Cross-Site Request Forgery (CSRF)
