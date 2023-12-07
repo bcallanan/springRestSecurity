@@ -34,7 +34,7 @@ features and knowledge I'll consider what I need to do to move this forward to 1
 
 ![Alt text](./bankAngularApp/angularBankApp.png?raw=true "BC Bank - fictitous bank")
 
-In this update we'll see that we have NodeJS running a single-page-app in Angular. The port in this case has been done using http://localhost:4200. The SpringService that supports the backend with the JPA repository resources is running on http://localhost:7075. These are two different domains because they are running on different port numbers. Yes, they're using localhost but because the port numbers are different we'll have to deal with <i><b>Cross-Origin Resource Sharing</b></i> or <i><b>CORS</b></i> for short.
+In this update, we'll see that we have NodeJS running a single-page-app in Angular. The port in this case has been done using http://localhost:4200. The SpringService that supports the backend with the JPA repository resources is running on http://localhost:7075. These are two different domains because they are running on different port numbers. Yes, they're using localhost but because the port numbers are different we'll have to deal with <i><b>Cross-Origin Resource Sharing</b></i> or <i><b>CORS</b></i> for short.
 
 Other reasons for <i><b>CORS</b></i> are:
   - different scheme (HTTP/HTTPS)
@@ -51,4 +51,4 @@ A browser will perform a <i><b>Preflight</b></i> request to the backend. The bac
 Option 2)
 Spring's Security FilterChain Bean can be instrumented with a CORS configuration with sort'of one-stop-shopping type configuration. Ah, yes!
      
-Note: We'll also have to cure: Cross-Site Request Forgery (CSRF) too!
+Note: We'll also have to cure: Cross-Site Request Forgery (CSRF)
