@@ -85,16 +85,19 @@ public class MyBankSecurityConfig {
 		 *   1) there will be no direct access to the endpoints
 		 *   2) without the next 2 lines the user credentials would be needed on every request
 		 *   	 .securityContext().requireExplicitSave(false) // this turns off the adhock JSession ID the default was 'true'
-			     .and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS))
-	     *   3) This tells the spring security framework to always create the JSession id by following the
-	     *      session management create here and after the initial login is completed.
-	     *      The JSession id is then sent to the Web Application to be used. The Web Application
-	     *      can leverage the same JSession id for all subsequent requests.
+		 *      .and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS))
+		 *   3) This tells the spring security framework to always create the JSession id by following the
+		 *      session management create here and after the initial login is completed.
+		 *      The JSession id is then sent to the Web Application to be used. The Web Application
+		 *      can leverage the same JSession id for all subsequent requests.
 		 */
-            // This turns off the default login session the spring security provides
-		    // it also tells the spring security framework that it will not store the 
-			// authentication details in the spring security contect holder. The code here
-			// is doing the work.
+	
+		/**
+		 *  This turns off the default login session the spring security provides
+		 *  it also tells the spring security framework that it will not store the 
+		 *  authentication details in the spring security contect holder. The code here
+	     *  is doing the work.
+	     */
 			.securityContext().requireExplicitSave(false) // it turns off the adhock JSession ID the default was 'true'
 			.and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS ))
 			
@@ -112,7 +115,7 @@ public class MyBankSecurityConfig {
         			.csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse()))
         	
         	/**
-        	 *  We need to send the header and cooker value information everytime for that
+        	 *  We need to send the header and cookie value information everytime for that
         	 *  we need to create a filter class. This will create a filter that passes the
         	 *  token in each request -- The filter implements OncePerRequestFilter for 'every-request'
         	 */
