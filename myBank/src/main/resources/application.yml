@@ -11,6 +11,10 @@ spring:
     activate:
       on-profile: localBank
   security:
+    cors:
+      domains:
+        # comma separated list
+        http://localhost:4200
     user:
       name: "brian"
       password: "password"

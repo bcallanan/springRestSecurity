@@ -2,7 +2,6 @@ package com.bcallanan.myBank.entity;
 
 import java.util.Date;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,23 +20,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class Card {
+public class Account {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int cardId;
-	private int cardNumber;
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
+	private int accountNumber;
 	
 //	@OneToOne
 //	@JoinColumn( name = "customerId")
 	private int customerId;
 
-	@Enumerated( EnumType.STRING )
-	private CardEnumType cardType;
-
-	private int cardLimit;
-	private int amountOutstanding;
-	private int amountAvailable;
+//	@Enumerated( EnumType.STRING )
+	private AccountEnumType accountType;
+	
+	private String branchAddress;
 	private Date createDate;
-
 }

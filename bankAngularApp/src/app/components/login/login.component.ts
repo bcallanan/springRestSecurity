@@ -31,8 +31,7 @@ export class LoginComponent implements OnInit {
       responseData => {
         this.model = <any> responseData.body;
         
-        // etting Auth here relates to the header ebeing displayed in
-        // the header.components
+        // setting 'Auth' here relates to the header being displayed
         // see  header.components.ts
         this.model.authStatus = 'AUTH';
         window.sessionStorage.setItem("userdetails",JSON.stringify(this.model));

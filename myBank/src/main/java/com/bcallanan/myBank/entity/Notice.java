@@ -6,9 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,29 +17,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class Customer {
+@Table( name = "notice_details" )
+public class Notice {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
-	private int customerId;
+	private int noticeId;
 	
-	private String name;
-
-	@NotNull
-	@NotBlank
-	private String emailAddress;
+	private String noticeSummary;
+	private String noticeDetails;
 	
-	private String mobileNumber;
-	
-	@NotNull
-	@NotBlank
-	private String pwd;
-	@NotNull
-	@NotBlank
-	private String role;
-	
+	private Date noticeBeginDate;
+	private Date noticeEndDate;
+	private Date updateDate;
 	private Date createDate;
-	
-	@Transient
-	private String registrationToken; 
 }

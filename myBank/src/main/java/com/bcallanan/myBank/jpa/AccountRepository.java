@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.bcallanan.myBank.entity.Card;
+import com.bcallanan.myBank.entity.Account;
 
 @Repository
-public interface CardRepository extends CrudRepository< Card, Integer > {
+public interface AccountRepository extends CrudRepository< Account, Integer > {
 	
-	List< Card > findByCustomerId( Integer customerId ); 
+	Account findByCustomerId( Integer customerId ); 
 }
