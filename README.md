@@ -101,7 +101,7 @@ There are two main options for CORS when using SpringSecurity, Origin based acce
 ### CSRF/XSRF - Cross-Site Request Forgery (CSRF)
 
 A typical Cross-Site Request Forgery attack aims to perform an operation in a web application on behalf of a user without
-their explicit consent. The attack isn't necessarily trying to steal the user's credentials or assume their identity. The attack is exploiting the user's access grants thru the use of stored cookies in the browser to carry out an action without their will. The user may have no idea they are being attacked.
+their explicit consent. The attack isn't necessarily trying to steal the user's credentials or assume their identity. The attack is exploiting the user's access grants thru the use of stored cookies in the browser to carry out an action without their will. The user may have no idea they are being attacked. CSRF Attacks are not a concern on GET Actions.
 
   - Example:
    
