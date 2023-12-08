@@ -31,7 +31,7 @@ The bank project is now functional on master with a customized authentication pr
 
 ### Update 2 - Angular single-page-app, CORS and CSRF
 
-This is an angular 14.2.X web app. As I incorporate more features, I'll consider what I need to do to move this forward to 16.x.
+This is an angular 14.2.X web app. As I incorporate more features, I'll consider what I need to do to move this forward to 16.x. The main area to focus on in the implementation is:  <i><b>MyBankSecurityConfig</b></i> 
 
 <!--![Alt text](./bankAngularApp/angularBankApp.png?raw=true "BC Bank - fictitious bank") -->
 
