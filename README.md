@@ -151,4 +151,4 @@ submitted in attack from the hyperlink is then rejected with a Status:403.
 What's additional here is that this form of attack should also be tracked/logged/alerted on the back-end as a cyber-attack. 
 Safeguards are there to prevent evil. It's also good to know when they are occurring.
    
-
+Repos: <b> dockers and springrestsecurity</b> are in sync w/ branch tag : <b>AuthenticationWithSpringUpdate2</b>
