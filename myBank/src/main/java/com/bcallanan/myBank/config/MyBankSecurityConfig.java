@@ -96,34 +96,34 @@ public class MyBankSecurityConfig {
 		 *  This turns off the default login session the spring security provides
 		 *  it also tells the spring security framework that it will not store the 
 		 *  authentication details in the spring security contect holder. The code here
-	     *  is doing the work.
-	     */
-			.securityContext().requireExplicitSave(false) // it turns off the adhock JSession ID the default was 'true'
-			.and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS ))
+		 *  is doing the work.
+		 */
+		.securityContext().requireExplicitSave(false) // it turns off the adhock JSession ID the default was 'true'
+		.and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS ))
 			
-			.cors().configurationSource( corsConfigurationSource() ) 
-        	.and().csrf( (csrf) -> csrf.csrfTokenRequestHandler( csrfTokenRequestAttributeHandler())
-        			.ignoringRequestMatchers( /*"/contact",*/ "/register") 
+		.cors().configurationSource( corsConfigurationSource() ) 
+		.and().csrf( (csrf) -> csrf.csrfTokenRequestHandler( csrfTokenRequestAttributeHandler())
+				.ignoringRequestMatchers( /*"/contact",*/ "/register") 
         			
-        			/**
-        			 * A {@link CsrfTokenRepository} that persists the CSRF token in a cookie named
-        			 * "XSRF-TOKEN" and reads from the header "X-XSRF-TOKEN" following the conventions of
-        			 * AngularJS. When using with AngularJS be sure to use {@link #withHttpOnlyFalse()}
-        			 * Not only Angular but most ui frameworks like react etc. they follow the same
-        			 * cookie format - cookie_name/header_name.
-        			 */
-        			.csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse()))
+				/**
+				 * A {@link CsrfTokenRepository} that persists the CSRF token in a cookie named
+				 * "XSRF-TOKEN" and reads from the header "X-XSRF-TOKEN" following the conventions of
+				 * AngularJS. When using with AngularJS be sure to use {@link #withHttpOnlyFalse()}
+				 * Not only Angular but most ui frameworks like react etc. they follow the same
+				 * cookie format - cookie_name/header_name.
+				 */
+				.csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse()))
         	
         	/**
         	 *  We need to send the header and cookie value information everytime for that
         	 *  we need to create a filter class. This will create a filter that passes the
         	 *  token in each request -- The filter implements OncePerRequestFilter for 'every-request'
         	 */
-        	.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-        	.authorizeHttpRequests((requests) -> requests
-        			// Commented out the number of endpoints in lieu of a call that says all(anyRequest)
-        			// are authentication required.
-					//.requestMatchers("/welcome", "/", "/myAccount","/myBalance","/myLoans","/myCards", "/user").authenticated()
+		.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+		.authorizeHttpRequests((requests) -> requests
+				// Commented out the number of endpoints in lieu of a call that says all(anyRequest)
+				// are authentication required.
+				//.requestMatchers("/welcome", "/", "/myAccount","/myBalance","/myLoans","/myCards", "/user").authenticated()
 				.requestMatchers("/notices",/*"/contact",*/ "/register").permitAll()//)
 				.anyRequest().authenticated()) // little easier to wildcard the authentication
 		.formLogin(Customizer.withDefaults())
