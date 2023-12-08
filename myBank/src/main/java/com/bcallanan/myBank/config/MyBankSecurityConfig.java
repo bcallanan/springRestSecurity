@@ -48,7 +48,7 @@ public class MyBankSecurityConfig {
 				//this can be more specific as well.
 				corsConfig.setAllowedMethods( Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE" ) );
 				corsConfig.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
-			    corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-requested-with"));
+			    corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-requested-with", "x-xsrf-token" ));
 				corsConfig.setAllowCredentials( true );
 				corsConfig.setMaxAge( 3600L );
 		
@@ -100,7 +100,7 @@ public class MyBankSecurityConfig {
 			
 			.cors().configurationSource( corsConfigurationSource() ) 
         	.and().csrf( (csrf) -> csrf.csrfTokenRequestHandler( csrfTokenRequestAttributeHandler())
-        			.ignoringRequestMatchers( "/contact", "/register") 
+        			.ignoringRequestMatchers( /*"/contact",*/ "/register") 
         			
         			/**
         			 * A {@link CsrfTokenRepository} that persists the CSRF token in a cookie named
@@ -121,7 +121,7 @@ public class MyBankSecurityConfig {
         			// Commented out the number of endpoints in lieu of a call that says all(anyRequest)
         			// are authentication required.
 					//.requestMatchers("/welcome", "/", "/myAccount","/myBalance","/myLoans","/myCards", "/user").authenticated()
-				.requestMatchers("/notices","/contact", "/register").permitAll()//)
+				.requestMatchers("/notices",/*"/contact",*/ "/register").permitAll()//)
 				.anyRequest().authenticated()) // little easier to wildcard the authentication
 		.formLogin(Customizer.withDefaults())
 		.httpBasic(Customizer.withDefaults());
