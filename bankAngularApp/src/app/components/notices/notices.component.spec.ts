@@ -6,14 +6,14 @@ describe('NoticesComponent', () => {
   let component: NoticesComponent;
   let fixture: ComponentFixture<NoticesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach( async( () => {
     TestBed.configureTestingModule({
       declarations: [ NoticesComponent ]
     })
     .compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach( () => {
     fixture = TestBed.createComponent(NoticesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

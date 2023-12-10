@@ -9,15 +9,11 @@ import { User } from 'src/app/model/user.model';
 export class HeaderComponent implements OnInit {
   
   user = new User();
-
-  constructor() {
-    
-  }
+  constructor() {}
 
   ngOnInit() {
-    if(sessionStorage.getItem('userdetails')){
-      this.user = JSON.parse(sessionStorage.getItem('userdetails')!);
+    if ( sessionStorage.getItem('userdetails') ) {
+      this.user = JSON.parse( sessionStorage.getItem('userdetails')! );
     }
   }
-
 }

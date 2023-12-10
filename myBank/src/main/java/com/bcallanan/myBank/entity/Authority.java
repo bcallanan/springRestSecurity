@@ -1,17 +1,12 @@
 package com.bcallanan.myBank.entity;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,19 +18,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Table( name = "accounts" )
-public class Account {
+@Table( name = "authorities" )
+public class Authority {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
-	private int accountNumber;
+	private int authorityId;
 	
-	@JsonIgnore
-	int customerId;
-
-//	@Enumerated( EnumType.STRING )
-	private AccountEnumType accountType;
+	@ManyToOne
+	@JoinColumn( name = "customerId", nullable = false)
+	private Customer customer;
 	
-	private String branchAddress;
-	private Date createDate;
+	@Column( name = "authority_type_action")
+	private String authorityTypeAction;
 }

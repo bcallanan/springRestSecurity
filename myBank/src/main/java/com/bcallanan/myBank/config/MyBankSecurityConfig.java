@@ -1,6 +1,7 @@
 package com.bcallanan.myBank.config;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -18,10 +19,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -44,15 +42,17 @@ public class MyBankSecurityConfig {
 			public CorsConfiguration getCorsConfiguration( HttpServletRequest request ) {
 				
 				CorsConfiguration corsConfig = new CorsConfiguration();
-				corsConfig.setAllowedOrigins( domains);
+				corsConfig.setAllowedOrigins( domains );
 				//this can be more specific as well.
 				corsConfig.setAllowedMethods( Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE" ) );
-				corsConfig.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
-			    corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-requested-with", "x-xsrf-token" ));
+				//corsConfig.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
+			    corsConfig.setAllowedHeaders( Collections.singletonList("*"));//Arrays.asList("Authorization", "content-type", "x-requested-with", "x-xsrf-token" ));
+			               //authorization, content-type, strict-transport-security, x-frame-options
+
 				corsConfig.setAllowCredentials( true );
 				corsConfig.setMaxAge( 3600L );
 		
-				return corsConfig;//new CorsFilter(urlSource);
+				return corsConfig;
 			}
 		};
 		return corsConfigSource;
@@ -103,7 +103,7 @@ public class MyBankSecurityConfig {
 			
 		.cors().configurationSource( corsConfigurationSource() ) 
 		.and().csrf( (csrf) -> csrf.csrfTokenRequestHandler( csrfTokenRequestAttributeHandler())
-				.ignoringRequestMatchers( /*"/contact",*/ "/register") 
+				.ignoringRequestMatchers( "/register") 
         			
 				/**
 				 * A {@link CsrfTokenRepository} that persists the CSRF token in a cookie named
@@ -123,9 +123,25 @@ public class MyBankSecurityConfig {
 		.authorizeHttpRequests((requests) -> requests
 				// Commented out the number of endpoints in lieu of a call that says all(anyRequest)
 				// are authentication required.
-				//.requestMatchers("/welcome", "/", "/myAccount","/myBalance","/myLoans","/myCards", "/user").authenticated()
-				.requestMatchers("/notices",/*"/contact",*/ "/register").permitAll()//)
-				.anyRequest().authenticated()) // little easier to wildcard the authentication
+				.requestMatchers( "/contact", "/user", "/welcome", "/")
+					.authenticated()
+				//authority based matchers	
+//				.requestMatchers( "/myAccount" ).hasAuthority( "VIEWACCOUNT")
+//				.requestMatchers( "/myBalance" ).hasAnyAuthority( "VIEWACCOUNT", "VIEWBALANCE")
+//				.requestMatchers( "/myLoans").hasAuthority( "VIEWLOANS")
+//				.requestMatchers( "/myCards").hasAuthority( "VIEWCARDS")
+				
+				/**
+				 * role based matches -- the role that should be required which is
+				 * prepended with ROLE_ automatically (i.e. USER, ADMIN, etc). It
+				 *  should not start with ROLE_ The database should have the prefix though
+				 */
+				.requestMatchers( "/myAccount" ).hasRole( "USER")
+				.requestMatchers( "/myBalance" ).hasAnyRole( "USER", "ADMIN")
+				.requestMatchers( "/myLoans").hasRole( "USER")
+				.requestMatchers( "/myCards").hasRole( "USER")
+
+				.requestMatchers( "/notices", "/register").permitAll())
 		.formLogin(Customizer.withDefaults())
 		.httpBasic(Customizer.withDefaults());
 		

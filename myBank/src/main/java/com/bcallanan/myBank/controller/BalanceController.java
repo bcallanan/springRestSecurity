@@ -17,10 +17,10 @@ public class BalanceController {
 	AccountTransactionRepository accountTransactionRepository;
 	
 	@GetMapping( value = { "/myBalance","/mybalance" })
-	public List<AccountTransaction> getBalanceDetails( @RequestParam Integer customerId ) {
+	public List<AccountTransaction> getBalanceDetails( @RequestParam int id ) {
 		
 		List<AccountTransaction> accountTransactions = accountTransactionRepository
-				.findByCustomerIdOrderByTransactionDateDesc( customerId );
+				.findByCustomerIdOrderByTransactionDateDesc( id );
 		
 		return accountTransactions;
 	}

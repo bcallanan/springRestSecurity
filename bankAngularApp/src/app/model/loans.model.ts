@@ -1,23 +1,19 @@
-
 export class Loans {
 
   public loanNumber: number;
-  public customerId: number;
-  public startDt: Date;
+  public startDate: Date;
   public loanType: string;
-  public totalLoan: number;
+  public totalLoanValue: number;
   public amountPaid: number;
-  public outstandingAmount: number;
+  public outstandingBalance: number;
   
-  constructor(loanNumber?: number,customerId?: number,startDt?: Date, loanType?: string,
-    totalLoan?: number,amountPaid?: number, outstandingAmount?: number){
+  constructor( loanNumber?: number, startDate?: Date, loanType?: string,
+		  totalLoanValue?: number, amountPaid?: number, outstandingBalance?: number){
         this.loanNumber = loanNumber || 0;
-        this.customerId = customerId || 0;
-        this.startDt = startDt!;
+        this.startDate = startDate!;
         this.loanType = loanType || "";
-        this.totalLoan = totalLoan || 0;
+        this.totalLoanValue = totalLoanValue || 0;
         this.amountPaid = amountPaid || 0;
-        this.outstandingAmount = outstandingAmount || 0;
+        this.outstandingBalance = outstandingBalance || 0;
   }
-
 }

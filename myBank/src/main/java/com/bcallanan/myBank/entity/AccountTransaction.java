@@ -2,6 +2,8 @@ package com.bcallanan.myBank.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,14 +24,12 @@ public class AccountTransaction {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
+	@JsonIgnore
 	private int transactionId;
 	
-//	@OneToOne
-//	@JoinColumn( name = "accountId")
-	private int accountId;
+	private int accountNumber;
 	
-//	@OneToOne
-//	@JoinColumn( name = "customerId")
+	@JsonIgnore
 	private int customerId;
 	
 	private Date transactionDate;

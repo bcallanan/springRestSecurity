@@ -30,11 +30,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let loan of loans">
-          <th>{{loan.startDt}}</th>
+          <th>{{loan.startDate}}</th>
           <td>{{loan.loanType}}</td>
-          <td>{{loan.totalLoan | currency}}</td>
+          <td>{{loan.totalLoanValue | currency}}</td>
           <td>{{loan.amountPaid | currency}}</td>
-          <td>{{loan.outstandingAmount | currency}}</td>
+          <td>{{loan.outstandingBalance | currency}}</td>
         </tr>
       </tbody>
     </table>

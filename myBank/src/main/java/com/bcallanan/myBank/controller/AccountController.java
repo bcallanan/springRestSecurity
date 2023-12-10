@@ -15,8 +15,10 @@ public class AccountController {
 	AccountRepository accountRepository;
 	
 	@GetMapping( value = { "/myAccount","/myaccount" })
-	public Account getAccountDetails( @RequestParam Integer customerId ) {
+	public Account getAccountDetails( @RequestParam Integer id ) {
 		
-		return accountRepository.findByCustomerId(customerId);
+		Account account = accountRepository.findByCustomerId( id );
+		
+		return account;
 	}
 }

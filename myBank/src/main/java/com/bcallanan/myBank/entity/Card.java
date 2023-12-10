@@ -2,6 +2,8 @@ package com.bcallanan.myBank.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,18 +24,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
+@Table( name = "cards" )
 public class Card {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private int cardId;
-	private int cardNumber;
+	private String cardNumber;
 	
-//	@OneToOne
-//	@JoinColumn( name = "customerId")
+	@JsonIgnore
 	private int customerId;
 
-	@Enumerated( EnumType.STRING )
+	//@Enumerated( EnumType.STRING )
 	private CardEnumType cardType;
 
 	private int cardLimit;

@@ -152,3 +152,34 @@ What's additional here is that this form of attack should also be tracked/logged
 Safeguards are there to prevent evil. It's also good to know when they are occurring.
    
 Repos: <b> dockers and springrestsecurity</b> are in sync w/ branch tag : <b>AuthenticationWithSpringUpdate2</b>
+
+### Update 3 - Authorities and Roles
+
+Spring stores Authorities and Roles inside the GrantedAuthority. A single method is available
+providing the Authority the user is assigned. Up until this point <i><b>SimpleGrantedAuthority</b></i>
+has been used for the authentication provider.
+
+Three spring security authority apis exist:
+ 1) hasAuthority() - accepts a single authority
+ 1) hasAnyAuthority() - accepts multiple authorities
+ 1) Access() - using Spring Expression Language(SpEL) it provides unlimited options for configuring authorities which are not possible with the other two options.
+ 
+ 
+ 
+Authority's are individual authorized privileges (Ex: VIEWACCOUNT, VIEWCARDS). Roles are a group of privileges/actions than can be used as a basis for providing organized administration of authorization rights. (Ex: ROLE_ADMIN, ROLE_USER) Roles are a course grain application of secure authorization levels.
+
+The names of the authorities and roles are arbitrary here. The names can be customized oer the business requirements. 
+
+Three Spring Security Role apis exist which are similar to the three authority APiI's listed above. 
+ 1) hasRole() - accepts a single role
+ 1) hasAnyRole() - accepts multiple roles
+ 1) Access() - again, using Spring Expression Language(SpEL) it provides unlimited options for configuring roles. 
+ 
+ Repos: <b> dockers and springrestsecurity</b> are in sync w/ branch tag : <b>AuthenticationWithSpringUpdate3</b>
+ 
+ ### Update 4 - Servlets & Filters
+ 
+One of the most popular servlet containers is Apache Tomcat. Servlet containers like Tomcat convert HTTP Messages into servlet requests and send those requests to the serlet methods as parameters. The same happens with the response but in the reverse order.
+
+Filters can be used to intercept these request/response messages and perform some operations on them as before/after business logic. Filters can be user to enforce security during these operations.
+

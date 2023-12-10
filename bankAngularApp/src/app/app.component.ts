@@ -8,6 +8,5 @@ import { environment } from 'src/environments/environment';
 })
 export class AppComponent {
   title = 'bank-app-ui';
-
   public appFooter = environment.appFooter;
 }

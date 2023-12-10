@@ -10,15 +10,13 @@ import { environment } from '../../../environments/environment';
 })
 export class LoginService {
 
-  constructor(private http: HttpClient) {
-    
-  }
+  constructor(private http: HttpClient) {}
 
-  validateLoginDetails(user: User) {
+  validateLoginDetails( user: User ) {
     // Called from login.component
-	window.sessionStorage.setItem("userdetails",JSON.stringify(user));
+	window.sessionStorage.setItem( "userdetails", JSON.stringify( user ));
     
-    return this.http.get(environment.rooturl + AppConstants.LOGIN_API_URL, { observe: 'response',withCredentials: true });
+    return this.http.get( environment.rooturl + AppConstants.LOGIN_API_URL,
+    			{ observe: 'response', withCredentials: true });
   }
-
 }

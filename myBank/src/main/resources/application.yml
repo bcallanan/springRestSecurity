@@ -3,7 +3,7 @@ spring:
     active: localBank
 server:
   # this can be overridden on the command line with
-  # java -jar -Dserver.port=808# target/kafkaStoreConsumer-0.0.1-SNAPSHOT.jar
+  # java -jar -Dserver.port=707# target/mybank-0.0.1-SNAPSHOT.jar
   port: 7075
 ---
 spring:

@@ -25,16 +25,16 @@
           <th scope="col">Type</th>
           <th scope="col">Total limit</th>
           <th scope="col">Amount used</th>
-          <th scope="col">Avaiable Amt</th>
+          <th scope="col">Available Amt</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let card of cards">
           <th>{{card.cardNumber}}</th>
           <td>{{card.cardType}}</td>
-          <td>{{card.totalLimit | currency}}</td>
-          <td>{{card.amountUsed | currency}}</td>
-          <td>{{card.availableAmount | currency}}</td>
+          <td>{{card.cardLimit | currency}}</td>
+          <td>{{card.amountOutstanding | currency}}</td>
+          <td>{{card.amountAvailable | currency}}</td>
         </tr>
       </tbody>
     </table>
