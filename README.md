@@ -177,9 +177,77 @@ Three Spring Security Role apis exist which are similar to the three authority A
  
  Repos: <b> dockers and springrestsecurity</b> are in sync w/ branch tag : <b>AuthenticationWithSpringUpdate3</b>
  
- ### Update 4 - Servlets & Filters
+### Update 4 - Servlets & Filters
  
 One of the most popular servlet containers is Apache Tomcat. Servlet containers like Tomcat convert HTTP Messages into servlet requests and send those requests to the serlet methods as parameters. The same happens with the response but in the reverse order.
 
-Filters can be used to intercept these request/response messages and perform some operations on them as before/after business logic. Filters can be user to enforce security during these operations.
+In this implementation update, it would be helpful to enable security debugging.
+Note: this is just for this section and should be used with care. 
 
+    @EnableWebSecurity(debug=true)
+   
+    and
+   
+    logging:
+      level:
+        org:
+          springframework:
+            security:
+              web:
+                FilterChainProxy:
+                  DEBUG
+    
+Filters can be used to intercept these request/response messages and perform some operations on them as before/after business logic. Filters can be user to enforce security during these operations. These filters are stacked in a filter chain. Default stack ordering (17 filters):
+
+    Security filter chain: [
+     DisableEncodeUrlFilter
+     ForceEagerSessionCreationFilter
+     ForceEagerSessionCreationFilter
+     WebAsyncManagerIntegrationFilter
+     SecurityContextPersistenceFilter
+     HeaderWriterFilter
+     CorsFilter <-- in the initial impl of the bank app in the repo this was disabled 
+     CsrfFilter <-- in the initial impl of the bank app in the repo this was disabled
+     LogoutFilter
+     UsernamePasswordAuthenticationFilter
+     DefaultLoginPageGeneratingFilter
+     DefaultLogoutPageGeneratingFilter
+     BasicAuthenticationFilter 
+     CsrfCookieFilter    <---- from last update
+     RequestCacheAwareFilter
+     SecurityContextHolderAwareRequestFilter
+     AnonymousAuthenticationFilter
+     SessionManagementFilter
+     ExceptionTranslationFilter
+     AuthorizationFilter]
+
+
+Filters provide an excellent opportunity to provide input validation, tracing/auditing and reporting. Multi-factor OTP as well.
+
+Filter API's in update will be:
+
+    addFilterBefore(filter, class) - add filter before specified class type
+    addFilterAfter( filter, class) - add filter after specified class type
+    addFilterAt( filter, class) - add filter at the location of the specified
+            class type. This option should be used with care cause it is randomly
+            executed along with the filter it is positioned alongside with. It does not
+            replace the filter positioned at. It is essentially at the same position as
+            or alongside with.
+   
+In the last update, we had already addressed the inclusion of handling the CSRF attacks by adding a CSRF Token into the headers along with cookie. So, that is how the filter got added into our own default filter chain stack.
+
+	.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+	
+	cookie: JSESSIONID=D4DB68AAD1E627C601A27D45C0B497B7; XSRF-TOKEN=108a195b-9df1-47c9-b489-d5894cb9e25b
+	
+Without slowing down the login process with some type of JDBC request to log
+the login request in the DB. We can easily log the login request to a suitable logger.
+
+    .addFilterAfter( new LoggingFilterAfterAuthorityFilter(), BasicAuthenticationFilter.class)
+    
+This will give traceability of logins into a SPLUNK logger for searching depending on how the logback config might be logged.
+
+Repo: <b>springrestsecurity</b> w/ branch tag : <b>AuthenticationWithSpringUpdate4</b>, there were no changes in the dockers.
+ 
+### Update 5 - JWT and Token based authentication
+     

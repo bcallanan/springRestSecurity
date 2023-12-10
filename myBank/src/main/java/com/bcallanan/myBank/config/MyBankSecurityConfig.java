@@ -24,6 +24,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.bcallanan.myBank.filter.CsrfCookieFilter;
+import com.bcallanan.myBank.filter.CustomRequestFilterBefore;
+import com.bcallanan.myBank.filter.LoggingFilterAfterAuthorityFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -120,6 +122,8 @@ public class MyBankSecurityConfig {
         	 *  token in each request -- The filter implements OncePerRequestFilter for 'every-request'
         	 */
 		.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+		.addFilterBefore( new CustomRequestFilterBefore(), BasicAuthenticationFilter.class)
+		.addFilterAfter( new LoggingFilterAfterAuthorityFilter(), BasicAuthenticationFilter.class)
 		.authorizeHttpRequests((requests) -> requests
 				// Commented out the number of endpoints in lieu of a call that says all(anyRequest)
 				// are authentication required.
