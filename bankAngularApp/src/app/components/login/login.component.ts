@@ -28,19 +28,25 @@ export class LoginComponent implements OnInit {
 
     	responseData => {
     	  
-    		this.user = <any> responseData.body;
+            window.sessionStorage.setItem("Authorization", responseData.headers.get( 'Authorization') ! );
+
+            this.user = <any> responseData.body;
       	  
-          // Record the Session details cookie and csrf details
-          let xsrf = getCookie( 'XSRF-TOKEN')!;
-          window.sessionStorage.setItem( "XSRF-TOKEN", xsrf );
+            // Record the Session details cookie and csrf details
+            let xsrf = getCookie( 'XSRF-TOKEN')!;
+            if ( ! xsrf ) {
+            	xsrf = getCookie( 'X-XSRF-TOKEN')!;
+            }
+            window.sessionStorage.setItem( "XSRF-TOKEN", xsrf );
         
-          // setting 'Auth' here relates to the header being displayed
-          // see  header.components.ts
-          this.user.authStatus = 'AUTH';
-          window.sessionStorage.setItem("userdetails", JSON.stringify(this.user));
+
+            // setting 'Auth' here relates to the header being displayed
+            // see  header.components.ts
+            this.user.authStatus = 'AUTH';
+            window.sessionStorage.setItem("userdetails", JSON.stringify(this.user));
         
-          // Redirect to the dashboard
-          this.router.navigate(['dashboard']);
+            // Redirect to the dashboard
+            this.router.navigate(['dashboard']);
         });
   }
 }

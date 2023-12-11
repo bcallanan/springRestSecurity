@@ -25,6 +25,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.bcallanan.myBank.filter.CsrfCookieFilter;
 import com.bcallanan.myBank.filter.CustomRequestFilterBefore;
+import com.bcallanan.myBank.filter.JWTTokenGenerationFilter;
+import com.bcallanan.myBank.filter.JWTTokenValidationFilter;
+import com.bcallanan.myBank.filter.JWTTokenValidatorFilter;
 import com.bcallanan.myBank.filter.LoggingFilterAfterAuthorityFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,7 +50,8 @@ public class MyBankSecurityConfig {
 				corsConfig.setAllowedOrigins( domains );
 				//this can be more specific as well.
 				corsConfig.setAllowedMethods( Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE" ) );
-				//corsConfig.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
+				//update 5 -- customized header for JWT
+				corsConfig.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
 			    corsConfig.setAllowedHeaders( Collections.singletonList("*"));//Arrays.asList("Authorization", "content-type", "x-requested-with", "x-xsrf-token" ));
 			               //authorization, content-type, strict-transport-security, x-frame-options
 
@@ -93,17 +97,21 @@ public class MyBankSecurityConfig {
 		 *      The JSession id is then sent to the Web Application to be used. The Web Application
 		 *      can leverage the same JSession id for all subsequent requests.
 		 */
-	
-		/**
-		 *  This turns off the default login session the spring security provides
-		 *  it also tells the spring security framework that it will not store the 
-		 *  authentication details in the spring security contect holder. The code here
-		 *  is doing the work.
-		 */
-		.securityContext().requireExplicitSave(false) // it turns off the adhock JSession ID the default was 'true'
-		.and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS ))
+		
+		//JWT Stateless Token Management: Update 5
+		.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS)
+		
+		//
+		//		/**
+		//		 *  This turns off the default login session the spring security provides
+		//		 *  it also tells the spring security framework that it will not store the 
+		//		 *  authentication details in the spring security contect holder. The code here
+		//		 *  is doing the work.
+		//		 */
+		//		.securityContext().requireExplicitSave(false) // it turns off the adhock JSession ID the default was 'true'
+		//		.and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS ))
 			
-		.cors().configurationSource( corsConfigurationSource() ) 
+		.and().cors().configurationSource( corsConfigurationSource() ) 
 		.and().csrf( (csrf) -> csrf.csrfTokenRequestHandler( csrfTokenRequestAttributeHandler())
 				.ignoringRequestMatchers( "/register") 
         			
@@ -116,24 +124,51 @@ public class MyBankSecurityConfig {
 				 */
 				.csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse()))
         	
-        	/**
-        	 *  We need to send the header and cookie value information everytime for that
-        	 *  we need to create a filter class. This will create a filter that passes the
-        	 *  token in each request -- The filter implements OncePerRequestFilter for 'every-request'
-        	 */
+        /**
+         *  When integrating the JWT Token into the headers we should validate the 
+         *  Token before the authentication filter. But only for requests that are not
+         *  the initial login. see interval implementation
+         *  
+         *  We need to send the header and cookie value information every-time. For that
+         *  we need to create a filter class. This will create a filter that passes the
+         *  token in each request -- The filter implements OncePerRequestFilter for 'every-request'.
+         *  
+         *  The JWT Token filter(JWTTokenGenerationFilter) is a OncePerRequestFilter as well. So, we
+         *  only get one JSON Web token per authentication request, however, we override the filter
+         *  behavior within the filter creation to *only* perform the filter during a 'logon'
+         *  operation. So, we only get one JWT Token for the entire session length. When another
+         *  login attempt occurs the filter will be executed again.
+         *  
+         *  The next JWT Token filter(JWTTokenValidationFilter) is also a OncePerRequestFilter
+         *  where the token validation is done once except when it is *not* a 'logon' operation.
+         */
+		
+		// before basicAuth for not for login see interval implementation
+		.addFilterBefore( new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
+
+		// After validation of basic auth
 		.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+
+		// this filter will be executed once during login see interval implementation
+		.addFilterAfter( new JWTTokenGenerationFilter(), BasicAuthenticationFilter.class)
+
+		// this filter will be executed once except login see interval implementation
+		.addFilterAfter( new JWTTokenValidationFilter(), BasicAuthenticationFilter.class)
+
 		.addFilterBefore( new CustomRequestFilterBefore(), BasicAuthenticationFilter.class)
+
+		// log requests of authentication
 		.addFilterAfter( new LoggingFilterAfterAuthorityFilter(), BasicAuthenticationFilter.class)
 		.authorizeHttpRequests((requests) -> requests
-				// Commented out the number of endpoints in lieu of a call that says all(anyRequest)
-				// are authentication required.
-				.requestMatchers( "/contact", "/user", "/welcome", "/")
-					.authenticated()
+
+				// authenticated endpoints - no roles or authorities
+				.requestMatchers( "/contact", "/user", "/welcome", "/").authenticated()
+				
 				//authority based matchers	
-//				.requestMatchers( "/myAccount" ).hasAuthority( "VIEWACCOUNT")
-//				.requestMatchers( "/myBalance" ).hasAnyAuthority( "VIEWACCOUNT", "VIEWBALANCE")
-//				.requestMatchers( "/myLoans").hasAuthority( "VIEWLOANS")
-//				.requestMatchers( "/myCards").hasAuthority( "VIEWCARDS")
+					// .requestMatchers( "/myAccount" ).hasAuthority( "VIEWACCOUNT")
+					// .requestMatchers( "/myBalance" ).hasAnyAuthority( "VIEWACCOUNT", "VIEWBALANCE")
+					// .requestMatchers( "/myLoans").hasAuthority( "VIEWLOANS")
+					// .requestMatchers( "/myCards").hasAuthority( "VIEWCARDS")
 				
 				/**
 				 * role based matches -- the role that should be required which is

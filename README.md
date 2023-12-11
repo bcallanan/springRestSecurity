@@ -234,7 +234,7 @@ Filter API's in update will be:
             replace the filter positioned at. It is essentially at the same position as
             or alongside with.
    
-In the last update, we had already addressed the inclusion of handling the CSRF attacks by adding a CSRF Token into the headers along with cookie. So, that is how the filter got added into our own default filter chain stack.
+In the last update, we had already addressed the inclusion of handling the CSRF attacks by adding a CSRF Token into the headers along with cookie. So, that is how the filter got added into list of the default filter chain stack above.
 
 	.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
 	
@@ -250,4 +250,68 @@ This will give traceability of logins into a SPLUNK logger for searching dependi
 Repo: <b>springrestsecurity</b> w/ branch tag : <b>AuthenticationWithSpringUpdate4</b>, there were no changes in the dockers.
  
 ### Update 5 - JWT and Token based authentication
-     
+
+In prior updates the JSession ID or cookie has been used as a form of authentication
+where the user could stay validated while the cookie was still within the expiration period. The JSession ID or cookie is created per session and doesn't contain much or
+any information relative to the ongoing login session.
+
+In this update, JSON Web Tokens(JWT) will added to the bank app. This token is an additional token to the CSRF token. There are several advantages and special features that this design provides. It has the advantage of providing user related data within the token to reduce caching session information elsewhere. JWT Tokens have 3 parts separated with '.' tokens:
+
+    - Header
+    - Payload
+    - Signature( Optional )
+    
+JWT Token encryption schemes might include something like the following(@see https://security.stackexchange.com/questions/79577/whats-the-difference-between-hmac-sha256key-data-and-sha256key-data):
+
+    HMACSCHA256(base64UrlEncoded(header) + "." base64URLEncoded(payload), secret)
+    
+Is the prior updates, the session management was does with a JSession ID evey time in every request. With JWT Token, token enforcement is Stateless.
+ 	
+    .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS)
+ 
+The token will now be challenged every time. This will be accomplished with the generation of a JWT during the initial login. The token will first be returned in the response as part of the header.
+
+You'll not the 3 parts of the JWT Token below. The first section is the algorithm used for the body. UUDecode base64 for "eyJhbGciOiJIUzI1NiJ9". Shows the content as:
+
+    {"alg":"HS256"}
+    
+The 2nd part(payload) and 3rd(Signature) part(s) require the key. Just like in ssh, you never give out your private keys.
+
+    Authorization: 		eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJCQyBCYW5rIiwic3ViIjoiQkMgSldUIFRva2VuIi   		widXNlcm5hbWUiOiJjYWxsYW5hbmtpZHNAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOiJST     		0xFX1VTRVIsUk9MRV9BRE1JTiIsImlhdCI6MTcwMjI1MTg1OSwiZXhwIjoxNzAyMjUzNjU5
+    	fQ.uKQdrmp60XfYtkv7ufSwmBk3a0lIfDz-oeQ8Ef7C77U
+    X-XSRF-TOKEN: 88326a75-8d1d-4824-9f39-3964e7a329c2
+
+As you can see the XSRF token is still present in the headers.
+
+With the additional filters being added into the Filter Chain. We now have several more after the authentication filter. And one additional one before that will validate the JWT Token on all requests.
+ 
+     Security filter chain: [
+	  DisableEncodeUrlFilter
+	  WebAsyncManagerIntegrationFilter
+	  SecurityContextHolderFilter
+	  HeaderWriterFilter
+	  CorsFilter
+	  CsrfFilter
+	  LogoutFilter
+	  UsernamePasswordAuthenticationFilter
+	  DefaultLoginPageGeneratingFilter
+	  DefaultLogoutPageGeneratingFilter
+	  JWTTokenValidatorFilter    <--- request validator is not tested on user login but every time there after
+	  CustomRequestFilterBefore
+	  BasicAuthenticationFilter
+	  CsrfCookieFilter   <--- generates the XSRF/CSRF token
+	  JWTTokenGenerationFilter <--- Is generated on user login but is not generated until the next login after token expiration
+	  JWTTokenValidationFilter <--- Is not validated on user login but there after and stores the token in the SecurityContext
+	  LoggingFilterAfterAuthorityFilter 
+	  RequestCacheAwareFilter
+	  SecurityContextHolderAwareRequestFilter
+	  AnonymousAuthenticationFilter
+	  SessionManagementFilter
+	  ExceptionTranslationFilter
+	  AuthorizationFilter ]
+  
+Some rework is needed here cause there's some deprecation going on that needs to be addressed. This will be done shortly.
+
+Repo: <b>springrestsecurity</b> w/ branch tag : <b>AuthenticationWithSpringUpdate5</b>, there were no changes in the dockers.
+
+### Update 6 - Method level security

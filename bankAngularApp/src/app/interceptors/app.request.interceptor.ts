@@ -11,6 +11,7 @@ export class XhrInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
 
   intercept( req: HttpRequest<any>, next: HttpHandler) {
+	  
     let httpHeaders = new HttpHeaders();
     
     //Check the session storage for the user. 
@@ -18,10 +19,19 @@ export class XhrInterceptor implements HttpInterceptor {
       this.user = JSON.parse(sessionStorage.getItem('userdetails')!);
     }
     
+
     // the trickery here is whether the user has email. then its a login
     if ( this.user && this.user.password && this.user.emailAddress ) {
       httpHeaders = httpHeaders.append('Authorization', 'Basic ' +
     		  window.btoa( this.user.emailAddress + ':' + this.user.password ));
+    } else {
+        // Check the session storage for the authorization header. It wont be there during login
+        // so we drop to the else and get it.
+        let authorization = sessionStorage.getItem('Authorization');
+        if ( authorization ) {
+        	// this is the JWT Token
+        	httpHeaders = httpHeaders.append('Authorization', authorization );
+        }
     }
 
     let xsrf = sessionStorage.getItem( 'XSRF-TOKEN' );
