@@ -28,10 +28,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Done on every authentication except logon. 
  */
+@Slf4j
 public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 
 	/**
@@ -55,7 +57,6 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 	        	// key from the constants
 	            SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
 	            
-	            // TODO: this is deprecated and removed going forward
 	            Claims claims = Jwts.parser()
 	            		.verifyWith(key)
 	            		.build()
@@ -67,13 +68,14 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 	            // authorities from the token
 	            String authorities = String.valueOf( claims.get("authorities"));
 	 
-	            // do put in the password - we dont know it anyway so leave it null
+	            // dont put in the password - we dont know it anyway so leave it null
 	            Authentication auth = new UsernamePasswordAuthenticationToken( userName, null,
 	            		AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
 	            
 	            SecurityContextHolder.getContext().setAuthentication( auth );
         	} catch( Exception e ) { //<-- catch all
-        		e.printStackTrace();
+
+        		log.error( "Invalid Token! {}", e.getMessage(), e);
         		throw new BadCredentialsException( "Invalid Token!");
         	}
         }
