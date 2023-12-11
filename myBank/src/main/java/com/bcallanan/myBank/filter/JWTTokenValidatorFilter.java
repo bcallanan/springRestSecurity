@@ -56,11 +56,11 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 	            SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
 	            
 	            // TODO: this is deprecated and removed going forward
-	            Claims claims = Jwts.parserBuilder()
-	            		.setSigningKey(key)
+	            Claims claims = Jwts.parser()
+	            		.verifyWith(key)
 	            		.build()
-	            		.parseClaimsJws( jwtTokenToValidate)
-	            		.getBody();
+	            		.parseSignedClaims( jwtTokenToValidate)
+	            		.getPayload();
 	            		
 	            // Username from the token
 	            String userName = String.valueOf( claims.get("username" ));

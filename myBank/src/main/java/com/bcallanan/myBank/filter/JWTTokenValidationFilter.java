@@ -50,15 +50,15 @@ public class JWTTokenValidationFilter extends OncePerRequestFilter {
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
             
             // TODO: fixed deprecation issues
-            String jwt = Jwts.builder().setIssuer("BC Bank").setSubject("BC JWT Token")
+            String jwt = Jwts.builder().issuer("BC Bank").subject("BC JWT Token")
             		
             		// Username from the authentication object
                     .claim("username", authentication.getName())
                     // Authorities from the authenticated account
                     .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     
-                    .setIssuedAt(new Date())
-                    .setExpiration(new Date((new Date()).getTime() + 1800000)) //<-- 30 minutes
+                    .issuedAt(new Date())
+                    .expiration(new Date((new Date()).getTime() + 1800000)) //<-- 30 minutes
                     .signWith(key).compact();
             
             // put the token in the the response back to the web app or other.

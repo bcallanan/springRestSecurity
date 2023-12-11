@@ -297,12 +297,12 @@ With the additional filters being added into the Filter Chain. We now have sever
 	  DefaultLoginPageGeneratingFilter
 	  DefaultLogoutPageGeneratingFilter
 	  JWTTokenValidatorFilter    <--- request validator is not tested on user login but every time there after
-	  CustomRequestFilterBefore
+	  CustomRequestFilterBefore <--- Adhoc filter
 	  BasicAuthenticationFilter
 	  CsrfCookieFilter   <--- generates the XSRF/CSRF token
 	  JWTTokenGenerationFilter <--- Is generated on user login but is not generated until the next login after token expiration
 	  JWTTokenValidationFilter <--- Is not validated on user login but there after and stores the token in the SecurityContext
-	  LoggingFilterAfterAuthorityFilter 
+	  LoggingFilterAfterAuthorityFilter <--- logging filter to log logins
 	  RequestCacheAwareFilter
 	  SecurityContextHolderAwareRequestFilter
 	  AnonymousAuthenticationFilter
@@ -310,8 +310,24 @@ With the additional filters being added into the Filter Chain. We now have sever
 	  ExceptionTranslationFilter
 	  AuthorizationFilter ]
   
-Some rework is needed here cause there's some deprecation going on that needs to be addressed. This will be done shortly.
+Expired Token example:
 
+     io.jsonwebtoken.ExpiredJwtException: JWT expired at 2023-12-11T00:13:14Z. Current time: 2023-12-11T01:03:10Z, a difference of 2996834 milliseconds.  Allowed clock skew: 0 milliseconds.
+     
 Repo: <b>springrestsecurity</b> w/ branch tag : <b>AuthenticationWithSpringUpdate5</b>, there were no changes in the dockers.
 
 ### Update 6 - Method level security
+
+Method level security starts with the SpringBootApplication and/or @Configuration implementations. 
+
+There are several examples @annotations and all of them have different rules:
+
+    @EnabledMethodSecurity - Goes on top of the SpringApplication or at the top of the @Configuration classes.
+     
+Method level security provides 2 common authorization rules:
+
+    - Invocation authorization: validates if someone can invoke a method base on their
+      roles and authorities.
+    - Filter authorization: validate what a method can receive thru it's parameters and
+      what the invoker can receive back from the method post logic execution.    
+      
