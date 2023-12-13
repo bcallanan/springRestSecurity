@@ -358,5 +358,39 @@ Repo: <b>springrestsecurity</b> the changes here were insignificant IMO. There a
 
 ### Update 7 - OAuth2
 
+There are Lots of different use cases for OAuth2. It provides a SSO level of authentication across a number of different platforms with a single authentication/authorization server. @see http://oauth.net/2. I've included some easy review items from the link. 
 
+##### OAuth Framework:
+
+  - Access Tokens: No particular format and various OAuth servers have chosen many different formats for their access tokens. Access tokens may be either "bearer tokens" or "sender-constrained" tokens. Sender-constrained tokens require the OAuth client to prove possession of a private key in some way in order to use the access token, such that the access token by itself would not be usable. ( Sender-constrained tokens sounds like they have added overhead. ie. 'stateful')
+
+  	- There are a number of properties of access tokens that are fundamental to the security model of OAuth:
+		- Access tokens must not be read or interpreted by the OAuth client. The OAuth client is not the intended audience of the token.
+		- Access tokens do not convey user identity or any other information about the user to the OAuth client.
+		- Access tokens should only be used to make requests to the resource server. Additionally, ID tokens must not be used to make requests to the resource server
+		
+  - Refresh tokens: a string that the OAuth client can use to get a new access token without the user's interaction. A refresh token must not allow the client to gain any access beyond the scope of the original grant. The refresh token exists to enable authorization servers to use short lifetimes for access tokens without needing to involve the user when the token expires.
+
+  - OAuth Scope: Scope is a mechanism in OAuth2 to limit an application's access to a user's account. An application can request one or more scopes, this information is then presented to the user in the consent screen, and the access token issued to the application will be limited to the scopes granted. The OAuth spec allows the authorization server or user to modify the scopes granted to the application compared to what is requested, although there are not many examples of services doing this in practice.
+  	- Mainstream services using scopes are:
+  		- Slack
+		- GitHub
+		- Google
+		- FitBit
+  		
+  
+##### OAuth 2.0 Grant Types:
+
+  - Authorization Code: The Authorization Code grant type is used by confidential and public clients to exchange an authorization code for an access token. After the user returns to the client via the redirect URL, the application will get the authorization code from the URL and use it to request an access token.
+  
+  - PKCE(Proof Key for Code Exchange): PKCE is required for all OAuth clients using the authorization code flow. It's an extension to the Authorization Code flow to prevent CSRF and authorization code injection attacks. So, what you get here addresses the CSRF stuff, done earlier, that really isn't/wasn't part of the JWT Feature set. It's still never free either way. PKCE was originally intended for mobile exchanges but because of the ability to prevent code injection it was useful for OAuth client security.
+  
+  	- See https://developer.pingidentity.com/en/tools/pkce-code-generator.html
+  
+  - Client Credentials: this grant type is used by clients to obtain an access token outside of the context of a user. This is typically used by clients to access resources about themselves rather than to access a user's resources. Client Credentials grant is used when applications request an access token to access their own resources, not on behalf of a user.
+  
+  - Device Code
+  - Refresh Token
+  - Implicit flow(legacy)
+  - password grant(legacy)
               
