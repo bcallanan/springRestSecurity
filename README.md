@@ -353,4 +353,10 @@ There are many annotation options with method level security, while the main two
      		
     - @PostFilterAuthorize - same deal, Limited use of this type of method security annotation IMO. Even more so given the functionality this api provides
       
+Repo: <b>springrestsecurity</b> the changes here were insignificant IMO. There also werent any in dockers.
+
+
+### Update 7 - OAuth2
+
+
               
