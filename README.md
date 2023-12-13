@@ -105,7 +105,7 @@ their explicit consent. The attack isn't necessarily trying to steal the user's 
 
   - Example:
    
-    User X logs into Site Y with their private user credentials. Site Y examines the credentials as a successful login. Site X
+    User X logs into Site Y with their private user credentials. Site Y examines the credentials as a successful login. Site Y
     then provides User X with a cookie that is stored into the user's local browser cache until such time the cookie expires or
     the user logs out.
     
@@ -318,11 +318,13 @@ Repo: <b>springrestsecurity</b> w/ branch tag : <b>AuthenticationWithSpringUpdat
 
 ### Update 6 - Method level security
 
-Method level security starts with the SpringBootApplication and/or @Configuration implementations. 
+Method level security starts with the SpringBootApplication and/or @Configuration implementations. This form of security acts as a second level of security. All method level security is accomplished with SPING AOP. Here Aspect programming is allowing an interceptor to interrogate the security enforcement being implemented on a method at 'runtime'.  
 
 There are several examples @annotations and all of them have different rules:
 
     @EnabledMethodSecurity - Goes on top of the SpringApplication or at the top of the @Configuration classes.
+    
+    @EnabledMethodSecurity(prePostEnabled = true )
      
 Method level security provides 2 common authorization rules:
 
@@ -331,3 +333,24 @@ Method level security provides 2 common authorization rules:
     - Filter authorization: validate what a method can receive thru it's parameters and
       what the invoker can receive back from the method post logic execution.    
       
+
+####Invocation athorization
+There are many annotation options with method level security, while the main two options are likely to handle 95% of the requirements:
+
+    - @PreAuthorize - pre auth means the methods authorization is examined before it is executed.
+    - @PostAuthorize - post auth means the methods authorization is examined after it is executed.
+      Like being able to get the result. Limited use of this type of method security annotation IMO.
+      
+####Filter authorization
+      
+     - @PreFilter - pre means the methods authorization is examined before it is executed. Apparently here the params should be of type Collection interface...List/Set etc
+     		@preFilter( "filterObject.contactName != 'test'"
+     		public List< COntact> SaveContactInquiryDetails( @RequestBody List<Contact> contacts ) { 
+     		   // Business Ligic
+     		   Return contacts;
+     		}  
+       This method will avoid processing any contact in the list where the contactName = test. I'm not sure the usefulness here. My .02!	 
+     		
+    - @PostFilterAuthorize - same deal, Limited use of this type of method security annotation IMO. Even more so given the functionality this api provides
+      
+              

@@ -20,7 +20,7 @@ export class BalanceComponent implements OnInit {
     if(this.user){
       this.dashboardService.getAccountTransactions(this.user.customerId).subscribe(
         responseData => {
-        this.transactions = <any> responseData.body;
+           this.transactions = <any> responseData.body;
         });
     }
   }

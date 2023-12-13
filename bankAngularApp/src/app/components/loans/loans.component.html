@@ -30,7 +30,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let loan of loans">
-          <th>{{loan.startDate}}</th>
+          <th>{{loan.startDate| date: 'MM/dd/yyyy' }}</th>
           <td>{{loan.loanType}}</td>
           <td>{{loan.totalLoanValue | currency}}</td>
           <td>{{loan.amountPaid | currency}}</td>
