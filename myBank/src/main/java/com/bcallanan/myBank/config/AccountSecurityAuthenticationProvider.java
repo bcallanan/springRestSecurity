@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ import com.bcallanan.myBank.entity.Customer;
 import com.bcallanan.myBank.jpa.CustomerRepository;
 
 @Component
+@ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
 class AccountSecurityAuthenticationProvider implements AuthenticationProvider {
 	/**
 	 * @see UsernamePasswordAuthenticationToken.class

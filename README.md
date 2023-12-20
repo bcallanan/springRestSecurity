@@ -367,6 +367,8 @@ To support multiple security configurations without deleting or altering code to
  
  The password encoder bcrypt will also be shut-off when OAuth is being used.
  
+ For OAuth the AuthenticationProvider class is also disabled.
+ 
  This spring boot auto-config will allow for both configurations to be employed by changing the boolean value in the application.yml file.
  
     - spring:
@@ -394,6 +396,12 @@ At the top of the methods the following annotation will enable one or the other.
 	@Bean
 	@ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
 	public PasswordEncoder passwordEncoder() {
+	
+	and
+	
+	@Component
+    @ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
+    class AccountSecurityAuthenticationProvider implements AuthenticationProvider {
 	
     
 ##### OAuth Framework:

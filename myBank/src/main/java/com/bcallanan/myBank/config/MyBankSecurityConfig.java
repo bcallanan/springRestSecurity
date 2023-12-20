@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -80,6 +81,20 @@ public class MyBankSecurityConfig {
 		return csrfTokenRequestAttributeHandler;
 	}
 	
+	/**
+	 * An convenience api to creating JwtAuthenticationConverter that is capable of
+	 * making the Jwt Granted Authorities Converter from the Kaycloak Converter
+	 *
+	 * @return
+	 */
+	JwtAuthenticationConverter jwtAuthenticationConverter() {
+		JwtAuthenticationConverter jwtAuthenticationConverter =
+				new JwtAuthenticationConverter();
+		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter( new KeycloakRoleConverter());
+		
+		return jwtAuthenticationConverter;
+	}
+	
     @Bean
 	@ConditionalOnProperty(name="spring.security.config.oauth", havingValue = "true")
 	SecurityFilterChain defaultOAuthSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -88,27 +103,6 @@ public class MyBankSecurityConfig {
 		 */
 		log.info( "OAUTH Security Enabled");
 		http  // --- HttpSecurity
-		/**
-		 *	There are several points here to be made:
-		 *   1) there will be no direct access to the endpoints
-		 *   2) without the next 2 lines the user credentials would be needed on every request
-		 *   	 .securityContext().requireExplicitSave(false) // this turns off the adhock JSession ID the default was 'true'
-		 *      .and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS))
-		 *   3) This tells the spring security framework to always create the JSession id by following the
-		 *      session management create here and after the initial login is completed.
-		 *      The JSession id is then sent to the Web Application to be used. The Web Application
-		 *      can leverage the same JSession id for all subsequent requests.
-		 */
-		
-		//
-		//		/**
-		//		 *  This turns off the default login session the spring security provides
-		//		 *  it also tells the spring security framework that it will not store the 
-		//		 *  authentication details in the spring security contect holder. The code here
-		//		 *  is doing the work.
-		//		 */
-		//		.securityContext().requireExplicitSave(false) // it turns off the adhock JSession ID the default was 'true'
-		//		.and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS ))
 			
 		   //JWT Stateless Token Management: Update 5
            .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -125,65 +119,21 @@ public class MyBankSecurityConfig {
 		      */
 		     .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse()))
         	
-		     /**
-	         *  When integrating the JWT Token into the headers we should validate the 
-	         *  Token before the authentication filter. But only for requests that are not
-	         *  the initial login. see interval implementation
-	         *  
-	         *  We need to send the header and cookie value information every-time. For that
-	         *  we need to create a filter class. This will create a filter that passes the
-	         *  token in each request -- The filter implements OncePerRequestFilter for 'every-request'.
-	         *  
-	         *  The JWT Token filter(JWTTokenGenerationFilter) is a OncePerRequestFilter as well. So, we
-	         *  only get one JSON Web token per authentication request, however, we override the filter
-	         *  behavior within the filter creation to *only* perform the filter during a 'logon'
-	         *  operation. So, we only get one JWT Token for the entire session length. When another
-	         *  login attempt occurs the filter will be executed again.
-	         *  
-	         *  The next JWT Token filter(JWTTokenValidationFilter) is also a OncePerRequestFilter
-	         *  where the token validation is done once except when it is *not* a 'logon' operation.
-	         */
-		
-		// before basicAuth for not for login see interval implementation
-		.addFilterBefore( new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
-
 		// After validation of basic auth
 		.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-
-		// this filter will be executed once during login see interval implementation
-		.addFilterAfter( new JWTTokenGenerationFilter(), BasicAuthenticationFilter.class)
-
-		// this filter will be executed once except login see interval implementation
-		.addFilterAfter( new JWTTokenValidationFilter(), BasicAuthenticationFilter.class)
-
-		.addFilterBefore( new CustomRequestFilterBefore(), BasicAuthenticationFilter.class)
 
 		// log requests of authentication
 		.addFilterAfter( new LoggingFilterAfterAuthorityFilter(), BasicAuthenticationFilter.class)
 		.authorizeHttpRequests((requests) -> requests
-
 				// authenticated endpoints - no roles or authorities
 				.requestMatchers( "/contact", "/user", "/welcome", "/").authenticated()
-				
-				//authority based matchers	
-					// .requestMatchers( "/myAccount" ).hasAuthority( "VIEWACCOUNT")
-					// .requestMatchers( "/myBalance" ).hasAnyAuthority( "VIEWACCOUNT", "VIEWBALANCE")
-					// .requestMatchers( "/myLoans").hasAuthority( "VIEWLOANS")
-					// .requestMatchers( "/myCards").hasAuthority( "VIEWCARDS")
-				
-				/**
-				 * role based matches -- the role that should be required which is
-				 * prepended with ROLE_ automatically (i.e. USER, ADMIN, etc). It
-				 *  should not start with ROLE_ The database should have the prefix though
-				 */
 				.requestMatchers( "/myAccount" ).hasRole( "USER")
 				.requestMatchers( "/myBalance" ).hasAnyRole( "USER", "ADMIN")
-				.requestMatchers( "/myLoans").authenticated()//.hasRole( "USER")
+				.requestMatchers( "/myLoans").authenticated()
 				.requestMatchers( "/myCards").hasRole( "USER")
-
 				.requestMatchers( "/notices", "/register").permitAll())
-		.formLogin(Customizer.withDefaults())
-		.httpBasic(Customizer.withDefaults());
+		.oauth2ResourceServer( (oauth2) -> oauth2.jwt(oauthConverter -> oauthConverter.
+				jwtAuthenticationConverter( jwtAuthenticationConverter())));
 		
 		return http.build();
 	}

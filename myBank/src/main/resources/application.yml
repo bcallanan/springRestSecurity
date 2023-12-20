@@ -20,11 +20,21 @@ spring:
     activate:
       on-profile: localBank
   security:
+
+    # this is just for oauth or JWT... only one can be true
     config:
       oauth:
-        false
-      jwt:
         true
+      jwt:
+        false
+
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri:
+            # exposed keycloak endpoint for postman
+            # http://192.168.99.108:7077/realm/bc_bank/.well-known/openid-configuration
+            "http://192.168.99.108:7077/realm/bc_bank/protocol/openid-connect/certs"
 
     cors:
       domains:
