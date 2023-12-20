@@ -7,6 +7,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -79,12 +80,13 @@ public class MyBankSecurityConfig {
 		return csrfTokenRequestAttributeHandler;
 	}
 	
-	@Bean
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-
+    @Bean
+	@ConditionalOnProperty(name="spring.security.config.oauth", havingValue = "true")
+	SecurityFilterChain defaultOAuthSecurityFilterChain(HttpSecurity http) throws Exception {
 		/**
 		 *  Below is the custom security configurations
 		 */
+		log.info( "OAUTH Security Enabled");
 		http  // --- HttpSecurity
 		/**
 		 *	There are several points here to be made:
@@ -98,9 +100,6 @@ public class MyBankSecurityConfig {
 		 *      can leverage the same JSession id for all subsequent requests.
 		 */
 		
-		//JWT Stateless Token Management: Update 5
-		.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS)
-		
 		//
 		//		/**
 		//		 *  This turns off the default login session the spring security provides
@@ -111,9 +110,119 @@ public class MyBankSecurityConfig {
 		//		.securityContext().requireExplicitSave(false) // it turns off the adhock JSession ID the default was 'true'
 		//		.and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS ))
 			
-		.and().cors().configurationSource( corsConfigurationSource() ) 
-		.and().csrf( (csrf) -> csrf.csrfTokenRequestHandler( csrfTokenRequestAttributeHandler())
-				.ignoringRequestMatchers( "/register") 
+		   //JWT Stateless Token Management: Update 5
+           .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		     .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+		     .csrf((csrf) -> csrf.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler())
+		     .ignoringRequestMatchers("/register")
+        			
+		     /**
+		      * A {@link CsrfTokenRepository} that persists the CSRF token in a cookie named
+		      * "XSRF-TOKEN" and reads from the header "X-XSRF-TOKEN" following the conventions of
+		      * AngularJS. When using with AngularJS be sure to use {@link #withHttpOnlyFalse()}
+		      * Not only Angular but most ui frameworks like react etc. they follow the same
+		      * cookie format - cookie_name/header_name.
+		      */
+		     .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse()))
+        	
+		     /**
+	         *  When integrating the JWT Token into the headers we should validate the 
+	         *  Token before the authentication filter. But only for requests that are not
+	         *  the initial login. see interval implementation
+	         *  
+	         *  We need to send the header and cookie value information every-time. For that
+	         *  we need to create a filter class. This will create a filter that passes the
+	         *  token in each request -- The filter implements OncePerRequestFilter for 'every-request'.
+	         *  
+	         *  The JWT Token filter(JWTTokenGenerationFilter) is a OncePerRequestFilter as well. So, we
+	         *  only get one JSON Web token per authentication request, however, we override the filter
+	         *  behavior within the filter creation to *only* perform the filter during a 'logon'
+	         *  operation. So, we only get one JWT Token for the entire session length. When another
+	         *  login attempt occurs the filter will be executed again.
+	         *  
+	         *  The next JWT Token filter(JWTTokenValidationFilter) is also a OncePerRequestFilter
+	         *  where the token validation is done once except when it is *not* a 'logon' operation.
+	         */
+		
+		// before basicAuth for not for login see interval implementation
+		.addFilterBefore( new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
+
+		// After validation of basic auth
+		.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+
+		// this filter will be executed once during login see interval implementation
+		.addFilterAfter( new JWTTokenGenerationFilter(), BasicAuthenticationFilter.class)
+
+		// this filter will be executed once except login see interval implementation
+		.addFilterAfter( new JWTTokenValidationFilter(), BasicAuthenticationFilter.class)
+
+		.addFilterBefore( new CustomRequestFilterBefore(), BasicAuthenticationFilter.class)
+
+		// log requests of authentication
+		.addFilterAfter( new LoggingFilterAfterAuthorityFilter(), BasicAuthenticationFilter.class)
+		.authorizeHttpRequests((requests) -> requests
+
+				// authenticated endpoints - no roles or authorities
+				.requestMatchers( "/contact", "/user", "/welcome", "/").authenticated()
+				
+				//authority based matchers	
+					// .requestMatchers( "/myAccount" ).hasAuthority( "VIEWACCOUNT")
+					// .requestMatchers( "/myBalance" ).hasAnyAuthority( "VIEWACCOUNT", "VIEWBALANCE")
+					// .requestMatchers( "/myLoans").hasAuthority( "VIEWLOANS")
+					// .requestMatchers( "/myCards").hasAuthority( "VIEWCARDS")
+				
+				/**
+				 * role based matches -- the role that should be required which is
+				 * prepended with ROLE_ automatically (i.e. USER, ADMIN, etc). It
+				 *  should not start with ROLE_ The database should have the prefix though
+				 */
+				.requestMatchers( "/myAccount" ).hasRole( "USER")
+				.requestMatchers( "/myBalance" ).hasAnyRole( "USER", "ADMIN")
+				.requestMatchers( "/myLoans").authenticated()//.hasRole( "USER")
+				.requestMatchers( "/myCards").hasRole( "USER")
+
+				.requestMatchers( "/notices", "/register").permitAll())
+		.formLogin(Customizer.withDefaults())
+		.httpBasic(Customizer.withDefaults());
+		
+		return http.build();
+	}
+	
+	@Bean
+	@ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
+	SecurityFilterChain defaultJWTSecurityFilterChain(HttpSecurity http) throws Exception {
+
+		/**
+		 *  Below is the custom security configurations
+		 */
+		log.info( "JWT Security Enabled");
+		http  // --- HttpSecurity
+		/**
+		 *	There are several points here to be made:
+		 *   1) there will be no direct access to the endpoints
+		 *   2) without the next 2 lines the user credentials would be needed on every request
+		 *   	 .securityContext().requireExplicitSave(false) // this turns off the adhock JSession ID the default was 'true'
+		 *      .and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS))
+		 *   3) This tells the spring security framework to always create the JSession id by following the
+		 *      session management create here and after the initial login is completed.
+		 *      The JSession id is then sent to the Web Application to be used. The Web Application
+		 *      can leverage the same JSession id for all subsequent requests.
+		 */
+		
+		//
+		//		/**
+		//		 *  This turns off the default login session the spring security provides
+		//		 *  it also tells the spring security framework that it will not store the 
+		//		 *  authentication details in the spring security contect holder. The code here
+		//		 *  is doing the work.
+		//		 */
+		//		.securityContext().requireExplicitSave(false) // it turns off the adhock JSession ID the default was 'true'
+		//		.and().sessionManagement((session) -> session.sessionCreationPolicy( SessionCreationPolicy.ALWAYS ))
+		   //JWT Stateless Token Management: Update 5
+           .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		     .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+		     .csrf((csrf) -> csrf.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler())
+		     .ignoringRequestMatchers("/register")
         			
 				/**
 				 * A {@link CsrfTokenRepository} that persists the CSRF token in a cookie named
@@ -185,87 +294,14 @@ public class MyBankSecurityConfig {
 		.httpBasic(Customizer.withDefaults());
 		
 		return http.build();
-
-		/**
-		 *  Configuration to deny all the requests
-		 */
-		/*http.authorizeHttpRequests(requests -> requests.anyRequest().denyAll())
-	                .formLogin(Customizer.withDefaults())
-	                	.httpBasic(Customizer.withDefaults());
-	        return http.build();*/
-
-		/**
-		 *  Configuration to permit all the requests
-		 */
-		/*http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
-	                .formLogin(Customizer.withDefaults())
-	                	.httpBasic(Customizer.withDefaults());
-	        return http.build();*/
-	}
-	   
-//	@Bean
-//	public InMemoryUserDetailsManager userDetailsService() {
-//		   
-//		// approach1 default password encode is obviously not preferred
-//		/* UserDetails adminDetails = User.withDefaultPasswordEncoder()
-//					.username( "admin" )
-//					.password( "pasword")
-//					.authorities( "admin")
-//					.build();
-//		   
-//		   UserDetails regularDetails = User.withDefaultPasswordEncoder()
-//					.username( "fred" )
-//					.password( "pasword")
-//					.authorities( "read")
-//					.build();
-//			
-//		   UserDetails brianDetails = User.withDefaultPasswordEncoder()
-//					.username( "brian" )
-//					.password( "pasword")
-//					.authorities( "admin")
-//					.build(); */
-//		   
-//		// approach1 default password encode is obviously not preferred
-//		// default password encode is obviously not preferred
-//		UserDetails adminDetails = User.withUsername( "admin" )
-//				.password( "pasword" )
-//				.authorities( "admin" )
-//				.build();
-//		   
-//		UserDetails regularDetails = User.withUsername( "fred" )
-//				.password( "pasword" )
-//				.authorities( "read" )
-//				.build();
-//			
-//		UserDetails brianDetails = User.withUsername( "brian" )
-//				.password( "pasword" )
-//				.authorities( "admin" )
-//				.build();
-//			
-//		//return new JdbcUserDetailsManager( adminDetails, regularDetails, brianDetails);
-//		return new InMemoryUserDetailsManager( adminDetails, regularDetails, brianDetails);
-//	}
-//	   
-	
-	/**
-	 * 
-	 * @param dataSource
-	 * @return
-	 */
-	//@Bean
-	//public JdbcUserDetailsManager userDetailsService(DataSource dataSource ) {
-	public UserDetailsService userDetailsService(DataSource dataSource ) {
-		return new JdbcUserDetailsManager( dataSource );
 	}
 	
 	/**
-	 * this is plaintext password approach
 	 * @return
 	 */
-	//@SuppressWarnings("deprecation")
 	@Bean
+	@ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-		//return NoOpPasswordEncoder.getInstance();
 	}
 }

@@ -334,14 +334,14 @@ Method level security provides 2 common authorization rules:
       what the invoker can receive back from the method post logic execution.    
       
 
-####Invocation athorization
+#### Invocation athorization
 There are many annotation options with method level security, while the main two options are likely to handle 95% of the requirements:
 
     - @PreAuthorize - pre auth means the methods authorization is examined before it is executed.
     - @PostAuthorize - post auth means the methods authorization is examined after it is executed.
       Like being able to get the result. Limited use of this type of method security annotation IMO.
       
-####Filter authorization
+#### Filter authorization
       
      - @PreFilter - pre means the methods authorization is examined before it is executed. Apparently here the params should be of type Collection interface...List/Set etc
      		@preFilter( "filterObject.contactName != 'test'"
@@ -356,10 +356,46 @@ There are many annotation options with method level security, while the main two
 Repo: <b>springrestsecurity</b> the changes here were insignificant IMO. There also werent any in dockers.
 
 
-### Update 7 - OAuth2
+### Update 7 - OAuth2, OpenID & Keycloak
 
 There are Lots of different use cases for OAuth2. It provides a SSO level of authentication across a number of different platforms with a single authentication/authorization server. @see http://oauth.net/2. I've included some easy review items from the link. 
 
+To support multiple security configurations without deleting or altering code too much we'll introduce a application property to alter the security config being used. We'll refactor MyBankSecurityConfig.java to have two SecurityFilterChain Beans:
+
+  - defaultJWTSecurityFilterChain - JWT Token and all the filters previously discussed
+  - defaultOAuthSecurityFilterChain - OAuth Tokens using the Keycloak Auth Server and OpenID 
+ 
+ The password encoder bcrypt will also be shut-off when OAuth is being used.
+ 
+ This spring boot auto-config will allow for both configurations to be employed by changing the boolean value in the application.yml file.
+ 
+    - spring:
+        security:
+          config:
+            oauth:
+              true
+            jwt:
+              false
+
+At the top of the methods the following annotation will enable one or the other. 
+
+	@Bean
+	@ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
+	SecurityFilterChain defaultJWTSecurityFilterChain(HttpSecurity http) throws Exception {
+
+    and
+    
+    @Bean
+	@ConditionalOnProperty(name="spring.security.config.oauth", havingValue = "true")
+	SecurityFilterChain defaultOAuthSecurityFilterChain(HttpSecurity http) throws Exception {
+	
+	and
+	
+	@Bean
+	@ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
+	public PasswordEncoder passwordEncoder() {
+	
+    
 ##### OAuth Framework:
 
   - Access Tokens: No particular format and various OAuth servers have chosen many different formats for their access tokens. Access tokens may be either "bearer tokens" or "sender-constrained" tokens. Sender-constrained tokens require the OAuth client to prove possession of a private key in some way in order to use the access token, such that the access token by itself would not be usable. 
@@ -371,8 +407,8 @@ There are Lots of different use cases for OAuth2. It provides a SSO level of aut
 		
   - Refresh tokens: a string that the OAuth client can use to get a new access token without the user's interaction. A refresh token must not allow the client to gain any access beyond the scope of the original grant. The refresh token exists to enable authorization servers to use short lifetimes for access tokens without needing to involve the user when the token expires. (this is also a grant type)
 
-  - OAuth Scope: Scope is a mechanism in OAuth2 to limit an application's access to a user's account. An application can request one or more scopes, this information is then presented to the user in the consent screen, and the access token issued to the application will be limited to the scopes granted. The OAuth spec allows the authorization server or user to modify the scopes granted to the application compared to what is requested, although there are not many examples of services doing this in practice.
-  	- Mainstream services using scopes are:
+  - OAuth Scope: Scope is a mechanism in OAuth2 to limit an application's access to a user's account. An application can request one or more scopes, this information is then presented to the user in the consent screen, and the access token issued the application will be limited to the scopes granted. The OAuth specification allows the authorization server or user to modify the scopes granted to the application compared to what is requested, although there are not many examples of services doing this in practice.
+  	- Some mainstream services using scopes are:
   		- Slack
 		- GitHub
 		- Google
@@ -390,5 +426,8 @@ There are Lots of different use cases for OAuth2. It provides a SSO level of aut
   - Client Credentials: this grant type is used by clients to obtain an access token outside of the context of a user. This is typically used by clients to access resources about themselves rather than to access a user's resources. Client Credentials grant is used when applications request an access token to access their own resources, not on behalf of a user.
   
   - Device Code: Non-Browser based devices, TV's etc. Sort of out-of-scope here.
+
   
-We'll use a KEYCloak Auth Server, Scopes, etc
+##### KEYCloak Auth Server - Docker(bitNami) Keycloak Latest(Quarkus) and Postgres
+
+   

@@ -20,6 +20,12 @@ spring:
     activate:
       on-profile: localBank
   security:
+    config:
+      oauth:
+        false
+      jwt:
+        true
+
     cors:
       domains:
         # comma separated list
