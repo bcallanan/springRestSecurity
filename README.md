@@ -11,7 +11,7 @@ The first 'hello' world spring security test is the 'rest' project. It's pretty 
 
  So, the DI for spring security is enabled. Which means that logging into(User/passwd) the port for the spring service is req'd.
 
- 
+## Spring Bank(full blown security features) 
 The next project myBank starts with a h2 database for in-memory and is also a good starter. I didnt set a branch
 label for the functional level. But then, I switched to a jdbc enabled security model with also using the docker
 repo in my repository for postgres. It's not trivial to set this up so if you need help, ask.
