@@ -33,8 +33,8 @@ spring:
         jwt:
           jwk-set-uri:
             # exposed keycloak endpoint for postman
-            # http://192.168.99.108:7077/realm/bc_bank/.well-known/openid-configuration
-            "http://192.168.99.108:7077/realm/bc_bank/protocol/openid-connect/certs"
+            # http://192.168.99.108:7077/realms/bc_bank/.well-known/openid-configuration
+            "http://192.168.99.108:7077/realms/bc_bank/protocol/openid-connect/certs"
 
     cors:
       domains:

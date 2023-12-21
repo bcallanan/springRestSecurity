@@ -125,14 +125,15 @@ public class MyBankSecurityConfig {
 		// log requests of authentication
 		.addFilterAfter( new LoggingFilterAfterAuthorityFilter(), BasicAuthenticationFilter.class)
 		.authorizeHttpRequests((requests) -> requests
-				// authenticated endpoints - no roles or authorities
+				
+				// authenticated endpoints 
 				.requestMatchers( "/contact", "/user", "/welcome", "/").authenticated()
 				.requestMatchers( "/myAccount" ).hasRole( "USER")
 				.requestMatchers( "/myBalance" ).hasAnyRole( "USER", "ADMIN")
 				.requestMatchers( "/myLoans").authenticated()
 				.requestMatchers( "/myCards").hasRole( "USER")
 				.requestMatchers( "/notices", "/register").permitAll())
-		.oauth2ResourceServer( (oauth2) -> oauth2.jwt(oauthConverter -> oauthConverter.
+		.oauth2ResourceServer( (oauth2) -> oauth2.jwt(jwtConverter -> jwtConverter.
 				jwtAuthenticationConverter( jwtAuthenticationConverter())));
 		
 		return http.build();

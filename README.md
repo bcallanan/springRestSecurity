@@ -438,4 +438,5 @@ At the top of the methods the following annotation will enable one or the other.
   
 ##### KEYCloak Auth Server - Docker(bitNami) Keycloak Latest(Quarkus) and Postgres
 
+   ![Alt text](./bankAngularApp/oauthsequence.jpg?raw=true "OAuth Grant Type Authentication")
    
