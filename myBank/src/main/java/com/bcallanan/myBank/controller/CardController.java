@@ -26,26 +26,26 @@ public class CardController {
 	private Boolean isJWTEnabled; 
 
 	@GetMapping( value = { "/myCards", "/mycards" })
-	public List<Card> getCardDetails( @RequestParam Object id ) {
+	public List<Card> getCardDetails( @RequestParam String customerId ) {
 
-		Integer customerId = null;
+		Integer id = null;
 		if ( ! isJWTEnabled ) {
 			// here the id is going to be the email address. so cast to a string,
 			// get the customer -> get the id -> then get the account
-			List<Customer> customers = customerRepository.findByEmailAddress( (String) id);
+			List<Customer> customers = customerRepository.findByEmailAddress( (String) customerId);
 			
 			if ( customers != null && ! customers.isEmpty() ) {
-				customerId = customers.get(0).getCustomerId();
+				id = customers.get(0).getCustomerId();
 			}
 			else { 
 				return null;
 			}
 		}
 		else {
-			customerId = (Integer) id;
+			id = Integer.valueOf( customerId );
 		}
 
-		List<Card> cards = cardRepository.findByCustomerId( customerId );
+		List<Card> cards = cardRepository.findByCustomerId( id );
 		return cards;
 	}
 }

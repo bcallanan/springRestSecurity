@@ -24,9 +24,9 @@ spring:
     # this is just for oauth or JWT... only one can be true
     config:
       oauth:
-        true
-      jwt:
         false
+      jwt:
+        true
 
     oauth2:
       resourceserver:
@@ -39,7 +39,8 @@ spring:
     cors:
       domains:
         # comma separated list
-        http://localhost:4200
+        http://localhost:4200,http://192.168.10.8:4200
+
     user:
       name: "brian"
       password: "password"

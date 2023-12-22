@@ -26,27 +26,27 @@ public class BalanceController {
 	private Boolean isJWTEnabled; 
 
 	@GetMapping( value = { "/myBalance","/mybalance" })
-	public List<AccountTransaction> getBalanceDetails( @RequestParam Object id ) {
+	public List<AccountTransaction> getBalanceDetails( @RequestParam String customerId ) {
 		
-		Integer customerId = null;
+		Integer id = null;
 		if ( ! isJWTEnabled ) {
 			// here the id is going to be the email address. so cast to a string,
 			// get the customer -> get the id -> then get the account
-			List<Customer> customers = customerRepository.findByEmailAddress( (String) id);
+			List<Customer> customers = customerRepository.findByEmailAddress( (String) customerId);
 			
 			if ( customers != null && ! customers.isEmpty() ) {
-				customerId = customers.get(0).getCustomerId();
+				id = customers.get(0).getCustomerId();
 			}
 			else { 
 				return null;
 			}
 		}
 		else {
-			customerId = (Integer) id;
+			id = Integer.valueOf( (String) customerId );
 		}
 
 		List<AccountTransaction> accountTransactions = accountTransactionRepository
-				.findByCustomerIdOrderByTransactionDateDesc( customerId );
+				.findByCustomerIdOrderByTransactionDateDesc( id );
 		
 		return accountTransactions;
 	}

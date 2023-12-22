@@ -26,27 +26,27 @@ public class AccountController {
 	private Boolean isJWTEnabled; 
 	
 	@GetMapping( value = { "/myAccount","/myaccount" })
-	public Account getAccountDetails( @RequestParam Object id ) {
+	public Account getAccountDetails( @RequestParam String customerId ) {
 		
 		Account account = null;
-		Integer customerId = null;
+		Integer id = null;
 		if ( ! isJWTEnabled ) {
 			// here the id is going to be the email address. so cast to a string,
 			// get the customer -> get the id -> then get the account
-			List<Customer> customers = customerRepository.findByEmailAddress( (String) id);
+			List<Customer> customers = customerRepository.findByEmailAddress( (String) customerId);
 			
 			if ( customers != null && ! customers.isEmpty() ) {
-				customerId = customers.get(0).getCustomerId();
+				id = customers.get(0).getCustomerId();
 			}
 			else { 
 				return null;
 			}
 		}
 		else {
-			customerId = (Integer) id;
+			id = Integer.valueOf((String) customerId);
 		}
 
-		account = accountRepository.findByCustomerId( customerId );
+		account = accountRepository.findByCustomerId( id );
 		return account;
 	}
 }

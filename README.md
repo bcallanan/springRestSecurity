@@ -312,7 +312,9 @@ With the additional filters being added into the Filter Chain. We now have sever
   
 Expired Token example:
 
-     io.jsonwebtoken.ExpiredJwtException: JWT expired at 2023-12-11T00:13:14Z. Current time: 2023-12-11T01:03:10Z, a difference of 2996834 milliseconds.  Allowed clock skew: 0 milliseconds.
+     io.jsonwebtoken.ExpiredJwtException: JWT expired at 2023-12-11T00:13:14Z. Current
+     time: 2023-12-11T01:03:10Z, a difference of 2996834 milliseconds.  Allowed clock skew:
+     0 milliseconds.
      
 Repo: <b>springrestsecurity</b> w/ branch tag : <b>AuthenticationWithSpringUpdate5</b>, there were no changes in the dockers.
 
@@ -343,15 +345,18 @@ There are many annotation options with method level security, while the main two
       
 #### Filter authorization
       
-     - @PreFilter - pre means the methods authorization is examined before it is executed. Apparently here the params should be of type Collection interface...List/Set etc
+     - @PreFilter - pre means the methods authorization is examined before it is executed. Apparently
+       here the params should be of type Collection interface...List/Set etc
      		@preFilter( "filterObject.contactName != 'test'"
      		public List< COntact> SaveContactInquiryDetails( @RequestBody List<Contact> contacts ) { 
      		   // Business Ligic
      		   Return contacts;
      		}  
-       This method will avoid processing any contact in the list where the contactName = test. I'm not sure the usefulness here. My .02!	 
+       This method will avoid processing any contact in the list where the contactName = test. I'm
+       not sure the usefulness here. My .02!	 
      		
-    - @PostFilterAuthorize - same deal, Limited use of this type of method security annotation IMO. Even more so given the functionality this api provides
+    - @PostFilterAuthorize - same deal, Limited use of this type of method security annotation IMO. Even
+      more so given the functionality this api provides
       
 Repo: <b>springrestsecurity</b> the changes here were insignificant IMO. There also werent any in dockers.
 
@@ -439,4 +444,5 @@ At the top of the methods the following annotation will enable one or the other.
 ##### KEYCloak Auth Server - Docker(bitNami) Keycloak Latest(Quarkus) and Postgres
 
    ![Alt text](./bankAngularApp/oauthsequence.jpg?raw=true "OAuth Grant Type Authentication")
+
    
