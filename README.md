@@ -446,3 +446,17 @@ At the top of the methods the following annotation will enable one or the other.
    ![Alt text](./bankAngularApp/oauthsequence.jpg?raw=true "OAuth Grant Type Authentication")
 
    
+The Angular Webapp is required to redirect to the Keycloak URL for the bcbankwebclient type for a credential login. Upon successful login the webapp client will then enhance the OAuth Authorization Grant Request with a PKCE flow. This will mitigate the security concerns over the Authorization code flow alone. Public web clients cannot securely store the client secret in javascript. Therefore, this next section will adhere to the additional layer of security with the use of a Proof Key for Code Exchange(PKCE).
+
+Once the user clicks the login, the client app creates a crytographically-random <i><b>code-challenge - 3</b></i> and from this generates a <i><b>code_verifier - 5</b></i> See the sequence diagram below:
+
+   ![Alt text](./bankAngularApp/oauth_with_PKCE_sequence.jpg?raw=true "OAuth Grant with PKCE enhancements")
+ 
+The <i><b>code_challenge</b></i> is a base64-url-encoded string of the SHA256 hash of the <i><b>code_verifier</b></i>. 
+
+The redirect to the Auth Server now contains the code_challenge that is the cached by the Auth Server(step 3). The Auth Server will then send back the <i><b>auth_code</b></i> to the client app (step 4). The <i><b>auth_code</b></i> is only good for a single use.  
+
+In step 5, the client app sends the <i><b>auth_code</b></i> and the <i><b>code-verifier</i></b> back to the Auth server. The Auth server will then verify the <i><b>code_challenge</b></i> with the <i><b>code_verifier</b></i>. If valid, it will respond with the ID Token and bearer access token (step 6). Optionally, (depending on design and requirements) also send back a Refresh Token.
+
+
+

@@ -24,9 +24,9 @@ spring:
     # this is just for oauth or JWT... only one can be true
     config:
       oauth:
-        false
-      jwt:
         true
+      jwt:
+        false
 
     oauth2:
       resourceserver:
