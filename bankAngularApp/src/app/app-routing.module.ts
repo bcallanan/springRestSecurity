@@ -9,21 +9,21 @@ import { BalanceComponent } from '../app/components/balance/balance.component';
 import { NoticesComponent } from './components/notices/notices.component';
 import { LoansComponent } from './components/loans/loans.component';
 import { CardsComponent } from './components/cards/cards.component';
-import { AuthActivateRouteGuard } from './routeguards/auth.routeguard';
+import { AuthKeycloakGuard } from './routeguards/auth.route';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'home', component: HomeComponent},
-  { path: 'login', component: LoginComponent},
+  //{ path: 'login', component: LoginComponent},
+  //{ path: 'logout', component: LogoutComponent},
   { path: 'contact', component: ContactComponent},
   { path: 'notices', component: NoticesComponent},
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthActivateRouteGuard]},
-  { path: 'logout', component: LogoutComponent},
-  { path: 'myAccount', component: AccountComponent, canActivate: [AuthActivateRouteGuard]},
-  { path: 'myBalance', component: BalanceComponent, canActivate: [AuthActivateRouteGuard]},
-  { path: 'myLoans', component: LoansComponent, canActivate: [AuthActivateRouteGuard]},
-  { path: 'myCards', component: CardsComponent, canActivate: [AuthActivateRouteGuard]}
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthKeycloakGuard], data: {}},
+  { path: 'myAccount', component: AccountComponent, canActivate: [AuthKeycloakGuard], data: { roles: [ "USER"]} },
+  { path: 'myBalance', component: BalanceComponent, canActivate: [AuthKeycloakGuard], data: { roles: [ "USER", "ADMIN"]} },
+  { path: 'myLoans', component: LoansComponent, canActivate: [AuthKeycloakGuard], data: {}},
+  { path: 'myCards', component: CardsComponent, canActivate: [AuthKeycloakGuard], data: { roles: [ "USER" ]}}
 ];
 
 @NgModule({

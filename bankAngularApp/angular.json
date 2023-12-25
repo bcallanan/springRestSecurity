@@ -13,6 +13,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "base64-js",
+              "js-sha256"
+            ],
             "outputPath": "dist/bank-app-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -62,6 +66,10 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "host": "192.168.10.8",
+            "port": 4200
+          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
@@ -99,5 +107,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

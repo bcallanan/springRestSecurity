@@ -12,24 +12,24 @@ export class DashboardService {
 
   constructor( private http:HttpClient ) { }
 
-  getAccountDetails( id: number) {
+  getAccountDetails( emailAddress: String) {
     return this.http.get( environment.rooturl + AppConstants.ACCOUNT_API_URL +
-    		"?customerId="+id,{ observe: 'response', withCredentials: true });
+    		"?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
   }
 
-  getAccountTransactions( id: number) {
+  getAccountTransactions( emailAddress: String) {
     return this.http.get( environment.rooturl + AppConstants.BALANCE_API_URL +
-    		"?customerId="+id,{ observe: 'response', withCredentials: true });
+    		"?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
   }
 
-  getLoansDetails( id: number ) {
+  getLoansDetails( emailAddress: String ) {
     return this.http.get( environment.rooturl + AppConstants.LOANS_API_URL +
-    		"?customerId="+id,{ observe: 'response', withCredentials: true });
+    		"?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
   }
 
-  getCardsDetails( id: number ) {
+  getCardsDetails( emailAddress: String ) {
     return this.http.get( environment.rooturl + AppConstants.CARDS_API_URL +
-    		"?customerId="+id,{ observe: 'response', withCredentials: true });
+    		"?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
   }
 
   getNoticeDetails() {
