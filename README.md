@@ -502,4 +502,4 @@ Step 5 gets enhanced with the following details:
         
 KeyCloak Angular
 
-    
+![Alt text](./bankAngularApp/oauthWithKeycloak.jpg?raw=true "KeyCloak Env")
