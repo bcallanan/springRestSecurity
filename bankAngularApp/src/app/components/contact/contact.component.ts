@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from "src/app/model/contact.model";
 import { NgForm } from '@angular/forms';
-import { getCookie } from 'typescript-cookie';
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
 
 
@@ -17,14 +16,13 @@ export class ContactComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-      
-  }
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+  ngOnInit() {}
 
   saveMessage(contactForm: NgForm) {
     this.dashboardService.saveMessage(this.model).subscribe(
       responseData => {
-        this.model = <any> responseData.body;
+        this.model = <Contact> responseData.body;
         contactForm.resetForm();
       });
 

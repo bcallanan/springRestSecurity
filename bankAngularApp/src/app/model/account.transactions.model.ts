@@ -8,15 +8,14 @@ export class AccountTransactions {
   public transactionAmount: number;
   public closingBalance: number;
   
-  constructor ( accountNumber?: number, transactionDate?: Date,
-		  transactionSummary?: string, transactionType?: string, transactionAmount?: number,
-		  closingBalance?: number ) {
-	  
-        this.accountNumber = accountNumber || 0;
-        this.transactionDate = transactionDate!;
-        this.transactionSummary = transactionSummary || '';
-        this.transactionType = transactionType || '';
-        this.transactionAmount = transactionAmount || 0;
-        this.closingBalance = closingBalance || 0;
+  constructor ( accountNumber?: number, transactionDate?: Date, transactionSummary?: string,
+    transactionType?: string, transactionAmount?: number, closingBalance?: number ) {
+
+      this.accountNumber = accountNumber || 0;
+      this.transactionDate = transactionDate!;
+      this.transactionSummary = transactionSummary || '';
+      this.transactionType = transactionType || '';
+      this.transactionAmount = transactionAmount || 0;
+      this.closingBalance = closingBalance || 0;
   }
 }

@@ -6,12 +6,12 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 @Component({
   selector: 'app-loans',
   templateUrl: './loans.component.html',
-  styleUrls: ['./loans.component.css']
+  styleUrls: [ './loans.component.css' ]
 })
 export class LoansComponent implements OnInit {
 
   user = new User();
-  loans = new Array();
+  loans = new Array<Loans>();
   currOutstandingBalance: number = 0;
 
   constructor( private dashboardService: DashboardService ) {}
@@ -21,7 +21,7 @@ export class LoansComponent implements OnInit {
     if ( this.user ) {
       this.dashboardService.getLoansDetails( this.user.emailAddress ).subscribe(
         responseData => {
-          this.loans = <any> responseData.body;
+          this.loans = <Array<Loans>> responseData.body;
           this.loans.forEach(function (this: LoansComponent, loan: Loans) {
             this.currOutstandingBalance = this.currOutstandingBalance + loan.outstandingBalance;
           }.bind(this)); 

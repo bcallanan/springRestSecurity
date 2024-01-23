@@ -12,22 +12,22 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 export class CardsComponent implements OnInit {
 
   user = new User();
-  cards = new Array();
+
+  cards = new Array<Cards>();
   currOutstandingAmt:number = 0;
 
-  constructor(private dashboardService: DashboardService) { }
+  constructor( private dashboardService: DashboardService ) { }
 
   ngOnInit(): void {
-    this.user = JSON.parse(sessionStorage.getItem('userdetails') || "");
+    this.user = JSON.parse( sessionStorage.getItem( 'userdetails' ) || "");
     if ( this.user ) {
       this.dashboardService.getCardsDetails( this.user.emailAddress ).subscribe(
         responseData => {
-          this.cards = <any> responseData.body;
-          this.cards.forEach(function (this: CardsComponent, card: Cards) {
+          this.cards = <Array<Cards>> responseData.body;
+          this.cards.forEach( function ( this: CardsComponent, card: Cards)  {
              this.currOutstandingAmt = this.currOutstandingAmt + card.amountAvailable;
-          }.bind(this)); 
+          }.bind( this )); 
         });
     }
   }
-
 }

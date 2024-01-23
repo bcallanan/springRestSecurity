@@ -12,8 +12,8 @@ export class DashboardComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if(sessionStorage.getItem('userdetails')){
-      this.user = JSON.parse(sessionStorage.getItem('userdetails') || "");
+    if ( sessionStorage.getItem( 'userdetails' )){
+      this.user = JSON.parse(sessionStorage.getItem( 'userdetails' ) || "");
     }
   }
 }
