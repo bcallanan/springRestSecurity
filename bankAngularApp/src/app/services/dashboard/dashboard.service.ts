@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConstants } from "../../constants/app.constants";
 import { environment } from '../../../environments/environment';
-import { User } from '../../model/user.model';
 import { Contact } from '../../model/contact.model';
 
 @Injectable({
@@ -12,33 +11,33 @@ export class DashboardService {
 
   constructor( private http:HttpClient ) { }
 
-  getAccountDetails( emailAddress: String) {
+  getAccountDetails( emailAddress: string) {
     return this.http.get( environment.rooturl + AppConstants.ACCOUNT_API_URL +
-    		"?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
+      "?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
   }
 
-  getAccountTransactions( emailAddress: String) {
+  getAccountTransactions( emailAddress: string) {
     return this.http.get( environment.rooturl + AppConstants.BALANCE_API_URL +
-    		"?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
+      "?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
   }
 
-  getLoansDetails( emailAddress: String ) {
+  getLoansDetails( emailAddress: string ) {
     return this.http.get( environment.rooturl + AppConstants.LOANS_API_URL +
-    		"?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
+      "?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
   }
 
-  getCardsDetails( emailAddress: String ) {
+  getCardsDetails( emailAddress: string ) {
     return this.http.get( environment.rooturl + AppConstants.CARDS_API_URL +
-    		"?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
+      "?customerId=" + emailAddress,{ observe: 'response', withCredentials: true });
   }
 
   getNoticeDetails() {
     return this.http.get( environment.rooturl + AppConstants.NOTICES_API_URL,
-    		{ observe: 'response' });
+      { observe: 'response' });
   }
 
   saveMessage( contact : Contact ) {
     return this.http.post(environment.rooturl + AppConstants.CONTACT_API_URL,
-    		contact,{ observe: 'response', withCredentials: true });
+      contact,{ observe: 'response', withCredentials: true });
   }
 }

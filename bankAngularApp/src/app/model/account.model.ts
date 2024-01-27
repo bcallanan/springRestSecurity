@@ -4,11 +4,10 @@ export class Account {
   public accountType: string;
   public branchAddress: string;
   
-  constructor( accountNumber?: number, accountType?: string,
-		  branchAddress?: string ) {
-	  
-        this.accountNumber = accountNumber || 0;
-        this.accountType = accountType || '';
-        this.branchAddress = branchAddress || '';
+  constructor( accountNumber?: number, accountType?: string, branchAddress?: string ) {
+
+    this.accountNumber = accountNumber || 0;
+    this.accountType = accountType || '';
+    this.branchAddress = branchAddress || '';
   }
 }

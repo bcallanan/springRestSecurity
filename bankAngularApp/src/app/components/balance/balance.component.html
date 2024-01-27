@@ -32,8 +32,8 @@
         <tr *ngFor="let transaction of transactions">
           <th>{{transaction.transactionDate | date: 'MM/dd/yyyy' }}</th>
           <td>{{transaction.transactionSummary}}</td>
-          <td>{{transaction.transactionType=='WITHDRAWAL' ? (transaction.transactionAmount | currency) : ' '}}</td>
-          <td>{{transaction.transactionType=='DEPOSIT' ? (transaction.transactionAmount | currency) : ' '}}</td>
+          <td>{{transaction.transactionType === 'WITHDRAWAL' ? (transaction.transactionAmount | currency) : ' '}}</td>
+          <td>{{transaction.transactionType === 'DEPOSIT' ? (transaction.transactionAmount | currency) : ' '}}</td>
           <td>{{transaction.closingBalance | currency}}</td>
         </tr>
       </tbody>

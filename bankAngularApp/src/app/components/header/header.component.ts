@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user.model';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
-import { publishFacade } from '@angular/compiler';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -35,7 +34,7 @@ export class HeaderComponent implements OnInit {
    * logout
    */
   public logout() {
-    let redirectUri: string = environment.getRedirectUrl() + "/home";
+    const redirectUri: string = environment.getRedirectUrl() + "/home";
     this.keycloakService.logout( redirectUri );
   }
 

@@ -18,7 +18,7 @@ export class AccountComponent implements OnInit {
     if(this.user){
       this.dashboardService.getAccountDetails( this.user.emailAddress ).subscribe(
         responseData => {
-        this.account = <any> responseData.body;
+        this.account = <Account> responseData.body;
         });
     }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Cards } from 'src/app/model/cards.model';
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
+import { Notice } from 'src/app/model/notice.model';
 
 @Component({
   selector: 'app-notices',
@@ -9,14 +9,14 @@ import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
 })
 export class NoticesComponent implements OnInit {
 
-  notices = new Array();
+  notices = new Array<Notice>();
 
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit(): void {
     this.dashboardService.getNoticeDetails().subscribe(
       responseData => {
-        this.notices = <any> responseData.body;
+        this.notices = <Array<Notice>> responseData.body;
       });
   }
 }

@@ -8,9 +8,10 @@ export class Loans {
   public outstandingBalance: number;
   
   constructor( loanNumber?: number, startDate?: Date, loanType?: string,
-		  totalLoanValue?: number, amountPaid?: number, outstandingBalance?: number){
+    totalLoanValue?: number, amountPaid?: number, outstandingBalance?: number ) {
+
         this.loanNumber = loanNumber || 0;
-        this.startDate = startDate!;
+        this.startDate = startDate ! ;
         this.loanType = loanType || "";
         this.totalLoanValue = totalLoanValue || 0;
         this.amountPaid = amountPaid || 0;
