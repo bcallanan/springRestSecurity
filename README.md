@@ -20,6 +20,9 @@ I've place a git tag/branch for both repos: functionalPostgresAuthenticationWith
 
 Update for Swagger:
 
+<details>
+   <summary>(Example API-Doc here)</summary>
+
     springdoc:
       show-oauth2-endpoints:
         true
@@ -35,7 +38,783 @@ Update for Swagger:
           true
         path:
           "/api-docs" 
-   
+
+
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://192.168.0.29:7075",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/Contact": {
+      "post": {
+        "tags": [
+          "contact-controller"
+        ],
+        "operationId": "getContactInquiryDetails",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contact": {
+      "post": {
+        "tags": [
+          "contact-controller"
+        ],
+        "operationId": "getContactInquiryDetails_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/welcome": {
+      "get": {
+        "tags": [
+          "welcome-controller"
+        ],
+        "operationId": "welcome",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/*": {
+      "get": {
+        "tags": [
+          "welcome-controller"
+        ],
+        "operationId": "welcome_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/myLoans": {
+      "get": {
+        "tags": [
+          "loans-controller"
+        ],
+        "operationId": "getLoanDetails",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Loan"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/myloans": {
+      "get": {
+        "tags": [
+          "loans-controller"
+        ],
+        "operationId": "getLoanDetails_1",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Loan"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mycards": {
+      "get": {
+        "tags": [
+          "card-controller"
+        ],
+        "operationId": "getCardDetails",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/myCards": {
+      "get": {
+        "tags": [
+          "card-controller"
+        ],
+        "operationId": "getCardDetails_1",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mybalance": {
+      "get": {
+        "tags": [
+          "balance-controller"
+        ],
+        "operationId": "getBalanceDetails",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountTransaction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/myBalance": {
+      "get": {
+        "tags": [
+          "balance-controller"
+        ],
+        "operationId": "getBalanceDetails_1",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountTransaction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/myaccount": {
+      "get": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "getAccountDetails",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/myAccount": {
+      "get": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "getAccountDetails_1",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Notices": {
+      "get": {
+        "tags": [
+          "notice-controller"
+        ],
+        "operationId": "getNotices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notice"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notices": {
+      "get": {
+        "tags": [
+          "notice-controller"
+        ],
+        "operationId": "getNotices_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notice"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": [
+          "login-controller"
+        ],
+        "operationId": "getUserDetailsAfterLogin",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "login-controller"
+        ],
+        "operationId": "getUserDetailsAfterLogin_3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "operationId": "getUserDetailsAfterLogin_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "login-controller"
+        ],
+        "operationId": "getUserDetailsAfterLogin_5",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "login-controller"
+        ],
+        "operationId": "getUserDetailsAfterLogin_6",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "tags": [
+          "login-controller"
+        ],
+        "operationId": "getUserDetailsAfterLogin_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "login-controller"
+        ],
+        "operationId": "getUserDetailsAfterLogin_4",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string"
+          },
+          "contactName": {
+            "type": "string"
+          },
+          "contactEmail": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Loan": {
+        "type": "object",
+        "properties": {
+          "loanNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "loanType": {
+            "type": "string",
+            "enum": [
+              "MORTGAGE",
+              "EQUITY",
+              "LINE_OF_CREDIT",
+              "HOME",
+              "VEHICLE",
+              "PERSONAL"
+            ]
+          },
+          "totalLoanValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amountPaid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "outstandingBalance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Card": {
+        "type": "object",
+        "properties": {
+          "cardNumber": {
+            "type": "string"
+          },
+          "cardType": {
+            "type": "string",
+            "enum": [
+              "CREDIT",
+              "DEBT"
+            ]
+          },
+          "cardLimit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amountOutstanding": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amountAvailable": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AccountTransaction": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "transactionSummary": {
+            "type": "string"
+          },
+          "transactionType": {
+            "type": "string",
+            "enum": [
+              "DEPOSIT",
+              "WITHDRAWAL"
+            ]
+          },
+          "transactionAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "closingBalance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "accountType": {
+            "type": "string",
+            "enum": [
+              "SAVINGS",
+              "CHECKING"
+            ]
+          },
+          "branchAddress": {
+            "type": "string"
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Notice": {
+        "type": "object",
+        "properties": {
+          "noticeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "noticeSummary": {
+            "type": "string"
+          },
+          "noticeDetails": {
+            "type": "string"
+          },
+          "noticeBeginDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "noticeEndDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Customer": {
+        "required": [
+          "emailAddress",
+          "pwd",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "emailAddress": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "pwd": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "role": {
+            "type": "string"
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "registrationToken": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+</details>
+
+
 ### Update 1 - Custom Authentication
 
 The bank project is now functional on master with a customized authentication provider with the following:
