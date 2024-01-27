@@ -1,6 +1,7 @@
 # springRestSecurity
 
-Hi, this is a security base repository. that's the intent. All things spring security. The Spring Bank Projects have also been updated with Swagger UI and Swagger API Doc.
+Hi, this is a security base repository. that's the intent. All things spring security. Update: The Spring Bank Projects have also been updated with Swagger UI and Swagger API Doc.
+
 
 The first 'hello' world spring security test is the 'rest' project. It's pretty basic but the pom does include:
 
@@ -17,6 +18,24 @@ up so if you need help, ask.
 
 I've place a git tag/branch for both repos: functionalPostgresAuthenticationWithSpring
 
+Update for Swagger:
+
+    springdoc:
+      show-oauth2-endpoints:
+        true
+      swagger-ui:
+        #configUrl: -- turns on the swagger petstore ui
+        #  /swaggerApi
+        enabled:
+          true
+        path:
+          "/index.html"
+      api-docs:
+        enabled:
+          true
+        path:
+          "/api-docs" 
+   
 ### Update 1 - Custom Authentication
 
 The bank project is now functional on master with a customized authentication provider with the following:
