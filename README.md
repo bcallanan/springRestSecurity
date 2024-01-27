@@ -1,6 +1,6 @@
 # springRestSecurity
 
-Hi, this is a security base repository. that's the intent. All things spring security. 
+Hi, this is a security base repository. that's the intent. All things spring security. It has also been updated with Swagger UI and Swagger API Doc.
 
 The first 'hello' world spring security test is the 'rest' project. It's pretty basic but the pom does include:
 

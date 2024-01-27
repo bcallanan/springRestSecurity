@@ -16,11 +16,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,6 +52,7 @@ public class Customer {
 
 	@NotNull
 	@NotBlank
+    @Email(regexp=".*@.*\\..*", message = "Email should be valid - JaneDoe@email.com")
 	private String emailAddress;
 	
 	private String mobileNumber;

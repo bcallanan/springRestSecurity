@@ -132,7 +132,7 @@ public class MyBankSecurityConfig {
 				.requestMatchers( "/myBalance" ).hasAnyRole( "USER", "ADMIN")
 				.requestMatchers( "/myLoans").authenticated()
 				.requestMatchers( "/myCards").hasRole( "USER")
-				.requestMatchers( "/notices", "/register").permitAll())
+				.requestMatchers( "/notices", "/register", "/api-docs/**", "/swagger-ui/**").permitAll())
 		.oauth2ResourceServer( (oauth2) -> oauth2.jwt(jwtConverter -> jwtConverter.
 				jwtAuthenticationConverter( jwtAuthenticationConverter())));
 		

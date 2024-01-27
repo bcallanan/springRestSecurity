@@ -7,6 +7,22 @@ logging:
             FilterChainProxy:
               DEBUG
 
+springdoc:
+  show-oauth2-endpoints:
+    true
+  swagger-ui:
+    #configUrl: -- turns on the swagger petstore ui
+    #  /swaggerApi
+    enabled:
+      true
+    path:
+      "/index.html"
+  api-docs:
+    enabled:
+      true
+    path:
+      "/api-docs" 
+
 spring:
   profiles:
     active: localBank
@@ -39,7 +55,7 @@ spring:
     cors:
       domains:
         # comma separated list
-        http://localhost:4200,http://192.168.10.8:4200
+        http://localhost:4200,http://192.168.10.8:4200,http://192.168.0.29:7075
 
     user:
       name: "brian"
