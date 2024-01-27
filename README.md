@@ -21,7 +21,7 @@ I've place a git tag/branch for both repos: functionalPostgresAuthenticationWith
 Update for Swagger:
 
 <details>
-   <summary>(Example API-Doc here)</summary>
+   <summary>(Example Application Yaml here)</summary>
 
     springdoc:
       show-oauth2-endpoints:
@@ -38,8 +38,10 @@ Update for Swagger:
           true
         path:
           "/api-docs" 
+</details>
 
-
+<details>
+   <summary>(Example API-Doc here)</summary>
 {
   "openapi": "3.0.1",
   "info": {
